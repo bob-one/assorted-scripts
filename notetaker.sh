@@ -23,3 +23,7 @@ fi
 # and symlink it to one of these locations as n
 # Then i add {'wname': 'Notes'}, to my floating_rules in the Qtile config
 # now I can add it to a keybinding in sxhkd or call it from the terminal
+# and open up a floating window, in vim, to take notes in using markdown
+# and each new day a new file is created using that days date in the filename
+# also each entry gets timestamped automatically inside the document
+# I use the keybinding super n to open it in vim, and super shift n to view the pdf version of it
