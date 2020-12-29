@@ -1,4 +1,8 @@
 #!/bin/sh
+# Just a renaming of HiPhish's script Macho
+# Blogpost:
+# https://github.io/blog/2020/05/31/macho-man-command-on-steroids
+
 
 export FZF_DEFAULT_OPTS='
 --height=30%

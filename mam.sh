@@ -1,4 +1,7 @@
 #!/bin/sh
+# just a renaming of HiPhish's script Macho
+# Blogpost:
+# https:/hiphish.github.io/blog/2020/05/31/macho-man-command-on-steroids/
 
 manual=$(apropos -s ${SECTION:-''} ${@:-.} | \
     grep -v -E '^.+ \(0\)' |\
