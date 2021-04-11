@@ -1,0 +1,40 @@
+#!/bin/env bash
+
+# Get the path to where this script is run from and asigning it the the variable $SCRIPT_PATH
+# In case it's a symlink: Resolve $SOURCE until the it's no longer a symlink
+# If $SOURCE was a relative symlink, resolve it relative to the path where the symlink was located
+SOURCE="${BASH_SOURCE[0]}"
+while [ -h "$SOURCE" ]; do
+    SCRIPT_PATH="$( cd -P "$( dirname "$SOURCE" )" >/dev/null 2>&1 && pwd )"
+    SOURCE="$(readlink "$SOURCE")"
+    [[ $SOURCE != /* ]] && SOURCE="$SCRIPT_PATH/$SOURCE"
+done
+SCRIPT_PATH="$( cd -P "$( dirname "$SOURCE" )" >/dev/null 2>&1 && pwd )"
+
+declare -a LIST=(
+"This script          $HOME/Scripts/Programs/assorted-scripts/dmconfig"
+"qtile-config         $HOME/.config/qtile/config.py"
+"qtile-keys           $HOME/.config/qtile/keybindings.py"
+"qtile-colors         $HOME/.config/qtile/colorprofile.py"
+"qtile-autostart      $HOME/.config/qtile/scripts/autostart.sh"
+"xmonad               $HOME/.xmonad/xmonad.hs"
+"xmonad-autostart     $HOME/.xmonad/scripts/autostart.sh"
+"zshrc                $HOME/.config/zsh/.zshrc"
+"sxhkd                $HOME/.config/sxhkd/sxhkdrc"
+"nvim                 $HOME/.config/nvim/init.vim"
+"ranger-rc            $HOME/.config/ranger/rc.conf"
+"ranger-rifle         $HOME/.config/ranger/rifle.conf"
+"ranger-scope         $HOME/.config/ranger/scope.sh"
+"qutebrowser          $HOME/.config/qutebrowser/config.py"
+"polybar              $HOME/.config/polybar/config"
+"alacritty            $HOME/.config/alacritty/alacritty.yml"
+"picom                $HOME/.config/picom/picom.conf"
+"doom-emacs-init      $HOME/.doom.d/init.el"
+"doom-emacs-config    $HOME/.doom.d/config.el"
+"doom-emacs-packages  $HOME/.doom.d/packages.el"
+"dmenu                $HOME/Programs/Git/suckless-builds/dmenu/config.h"
+)
+
+CONFIG=$(printf '%s\n' "${LIST[@]}" | dmenu -i -l 20 -p "Search configs" | awk '{print $2}')
+[[ "$CONFIG" = "" ]] && ( exit )
+[[ "$CONFIG" ]] && ( neovide $CONFIG 2&>/dev/null )

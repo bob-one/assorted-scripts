@@ -1,0 +1,76 @@
+#!/usr/bin/env bash
+#
+# Script name: dmconf
+# Description: Choose from a list of configuration files to edit.
+# Dependencies: dmenu
+# GitLab: https://www.gitlab.com/dwt1/dmscripts
+# License: https://www.gitlab.com/dwt1/dmscripts/LICENSE
+# Contributors: Derek Taylor
+
+# Defining the text editor to use.
+# DMENUEDITOR="st -e vim"
+# DMENUEDITOR="st -e nvim"
+DMEDITOR="emacsclient -c -a emacs"
+
+# An array of options to choose.
+# You can edit this list to add/remove config files.
+declare -a options=(
+"Rammeavtale"
+"Kravspesifikasjon"
+"ESAVE-prosjekt"
+"Energioppfølging"
+"quit"
+)
+
+# right pane first
+# left pane second
+# Middle pane third
+
+ramma () {
+    zathura $HOME/Documents/Hjemmekontor/Rammeavtaler/Notater/spørgesmål.md.pdf &
+    libreoffice $HOME/Documents/Hjemmekontor/Rammeavtaler/Tilbudsinnbydelse_Kopi.docx &
+    alacritty -e nvim $HOME/Documents/Hjemmekontor/Rammeavtaler/Notater/spørgesmål.md 
+}
+
+kravan () {
+    libreoffice $HOME/Documents/Hjemmekontor/Kravspesifikasjon/Kravspesifikasjon\ for\ SD\ 2.docx
+}
+
+esave () {
+    echo "test esave"
+}
+
+energi () {
+    echo "test energi"
+}
+
+# Piping the above array into dmenu.
+# We use "printf '%s\n'" to format the array one item to a line.
+#choice=$(printf '%s\n' "${options[@]}" | dmenu -i -l 20 -p 'Edit config:')
+choice=$(printf '%s\n' "${options[@]}" | dmenu -i -l 20 -p 'Work enviroment:')
+
+# What to do when/if we choose 'quit'.
+#if [[ "$choice" == "quit" ]]; then
+#    echo "Program terminated." && exit 0
+
+# What to do when/if we choose a file to edit.
+#elif [ "$choice" ]; then
+    case "$choice" in
+        "Rammeavtale")
+            ramma                       
+            ;;
+        "Kravspesifikasjone")
+            kravan
+            ;;
+        "quit")
+            exit
+            ;;
+        esac
+            
+#	cfg=$(printf '%s\n' "${choice}" | awk '{print $NF}')
+#	$DMEDITOR "$cfg"
+
+# What to do if we just escape without choosing anything.
+#else
+#    echo "Program terminated." && exit 0
+#fi

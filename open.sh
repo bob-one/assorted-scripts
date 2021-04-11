@@ -18,6 +18,7 @@ PIC_EDITOR="devour gimp"
 PROGRAM_EDITOR="nvim"
 PDF_VIEWER="devour zathura"
 ORG_VIEWER="emacs"
+CRAP_EDITOR="libreoffice"
 
 #                                       Run commands                                       #
 case $LAST_EXT in
@@ -27,6 +28,8 @@ case $LAST_EXT in
         $PIC_VIEWER $1 ;;
      pdf )
          $PDF_VIEWER $1 ;;
+     docx )
+         $CRAP_EDITOR $1 ;;
      tex | text | txt )
          $TEXT_EDITOR $1 ;;
      mp4 | mpv | mov | avi | mkv | webm )
