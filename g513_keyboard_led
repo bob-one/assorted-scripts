@@ -92,6 +92,9 @@ case $COLOR in
         g513-led -dv $VendorID -dp $ProductID -k right $MOVEMENT
 #   Dmenu Scripts
         g513-led -dv $VendorID -dp $ProductID -k P $DMENU_SCRIPTS
+        g513-led -dv $VendorID -dp $ProductID -k Z $DMENU_SCRIPTS
+        g513-led -dv $VendorID -dp $ProductID -k O $DMENU_SCRIPTS
+        g513-led -dv $VendorID -dp $ProductID -k U $DMENU_SCRIPTS
         g513-led -dv $VendorID -dp $ProductID -k S $DMENU_SCRIPTS
         g513-led -dv $VendorID -dp $ProductID -k I $DMENU_SCRIPTS
         g513-led -dv $VendorID -dp $ProductID -k A $DMENU_SCRIPTS
