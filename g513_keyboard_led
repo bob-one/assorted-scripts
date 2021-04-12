@@ -1,0 +1,165 @@
+#!/bin/env bash
+ini_path="/home/andre/Scripts/Programs/assorted-scripts"
+source <(grep = $ini_path/g513_keyboard_ID.ini)
+
+[[ '$1' = '' ]] && ( echo "Read the script!"; exit ) || COLOR=$1
+
+SCRIPTS=00ffff
+DMENU_SCRIPTS=1212ff
+PROGRAMS=ff00ff
+SYSTEM=ff7c00
+MOVEMENT=ffff00
+DESKTOPS=991212
+NUM_NUM=ff7c00
+NUM_OP=00ff7c
+MUSIC=129912
+OTHER=00ff7c
+REST=727272
+SPECIAL=ffff00
+
+case $COLOR in
+    --game )
+        g513-led -dv $VendorID -dp $ProductID -tuk 1 -a 9090ff
+        g513-led -dv $VendorID -dp $ProductID -k W ff00ff
+        g513-led -dv $VendorID -dp $ProductID -k A ff7c00
+        g513-led -dv $VendorID -dp $ProductID -k S ff0000
+        g513-led -dv $VendorID -dp $ProductID -k D 00ffff
+        g513-led -dv $VendorID -dp $ProductID -k top ff00ff
+        g513-led -dv $VendorID -dp $ProductID -k bottom ff0000
+        g513-led -dv $VendorID -dp $ProductID -k left ff7c00
+        g513-led -dv $VendorID -dp $ProductID -k right 00ffff
+        g513-led -dv $VendorID -dp $ProductID -k shift_left 00ff00
+        g513-led -dv $VendorID -dp $ProductID -k shift_right 00ff00
+        g513-led -dv $VendorID -dp $ProductID -k space 00ff00
+        g513-led -dv $VendorID -dp $ProductID -k ctrl_left 00ff00
+        g513-led -dv $VendorID -dp $ProductID -k ctrl_right 00ff00
+        g513-led -dv $VendorID -dp $ProductID -k alt_left 00ff00
+        g513-led -dv $VendorID -dp $ProductID -k alt_right 00ff00 ;;
+    --vim )
+        g513-led -dv $VendorID -dp $ProductID -tuk 1 -a f0ff00
+        g513-led -dv $VendorID -dp $ProductID -k period 0000ff
+        g513-led -dv $VendorID -dp $ProductID -k winleft ff00ff
+        g513-led -dv $VendorID -dp $ProductID -k shift_left 0000ff
+        g513-led -dv $VendorID -dp $ProductID -k shift_right 0000ff
+        g513-led -dv $VendorID -dp $ProductID -k A 0000ff
+        g513-led -dv $VendorID -dp $ProductID -k Y 0000ff
+        g513-led -dv $VendorID -dp $ProductID -k D 0000ff
+        g513-led -dv $VendorID -dp $ProductID -k 0 0000ff
+        g513-led -dv $VendorID -dp $ProductID -k P 0000ff
+        g513-led -dv $VendorID -dp $ProductID -k I 0000ff
+        g513-led -dv $VendorID -dp $ProductID -k O 0000ff
+        g513-led -dv $VendorID -dp $ProductID -k escape 0000ff
+        g513-led -dv $VendorID -dp $ProductID -k C 0000ff
+        g513-led -dv $VendorID -dp $ProductID -k W 0000ff
+        g513-led -dv $VendorID -dp $ProductID -k U 0000ff
+        g513-led -dv $VendorID -dp $ProductID -k X 0000ff
+        g513-led -dv $VendorID -dp $ProductID -k H ff7c00
+        g513-led -dv $VendorID -dp $ProductID -k J ff0000
+        g513-led -dv $VendorID -dp $ProductID -k K ff00ff
+        g513-led -dv $VendorID -dp $ProductID -k L 00ffff
+        g513-led -dv $VendorID -dp $ProductID -k top ff00ff
+        g513-led -dv $VendorID -dp $ProductID -k bottom ff0000
+        g513-led -dv $VendorID -dp $ProductID -k left ff7c00
+        g513-led -dv $VendorID -dp $ProductID -k right 00ffff
+        g513-led -dv $VendorID -dp $ProductID -k ctrl_left 0000ff
+        g513-led -dv $VendorID -dp $ProductID -k ctrl_right 0000ff
+        g513-led -dv $VendorID -dp $ProductID -k V 0000ff
+        g513-led -dv $VendorID -dp $ProductID -k backslash 0000ff
+        g513-led -dv $VendorID -dp $ProductID -k Q 0000ff
+        g513-led -dv $VendorID -dp $ProductID -k Z 0000ff ;;
+
+    --sxhkd )
+        g513-led -dv $VendorID -dp $ProductID -tuk 1 -a $REST
+#   Desktops
+        g513-led -dv $VendorID -dp $ProductID -k 1 $DESKTOPS
+        g513-led -dv $VendorID -dp $ProductID -k 2 $DESKTOPS
+        g513-led -dv $VendorID -dp $ProductID -k 3 $DESKTOPS
+        g513-led -dv $VendorID -dp $ProductID -k 4 $DESKTOPS
+        g513-led -dv $VendorID -dp $ProductID -k 5 $DESKTOPS
+        g513-led -dv $VendorID -dp $ProductID -k 6 $DESKTOPS
+        g513-led -dv $VendorID -dp $ProductID -k 7 $DESKTOPS
+        g513-led -dv $VendorID -dp $ProductID -k 8 $DESKTOPS
+        g513-led -dv $VendorID -dp $ProductID -k 9 $DESKTOPS
+        g513-led -dv $VendorID -dp $ProductID -k 0 $DESKTOPS
+#   Movement
+        g513-led -dv $VendorID -dp $ProductID -k H $MOVEMENT
+        g513-led -dv $VendorID -dp $ProductID -k J $MOVEMENT
+        g513-led -dv $VendorID -dp $ProductID -k K $MOVEMENT
+        g513-led -dv $VendorID -dp $ProductID -k L $MOVEMENT
+        g513-led -dv $VendorID -dp $ProductID -k top $MOVEMENT
+        g513-led -dv $VendorID -dp $ProductID -k bottom $MOVEMENT
+        g513-led -dv $VendorID -dp $ProductID -k left $MOVEMENT
+        g513-led -dv $VendorID -dp $ProductID -k right $MOVEMENT
+#   Dmenu Scripts
+        g513-led -dv $VendorID -dp $ProductID -k P $DMENU_SCRIPTS
+        g513-led -dv $VendorID -dp $ProductID -k S $DMENU_SCRIPTS
+        g513-led -dv $VendorID -dp $ProductID -k I $DMENU_SCRIPTS
+        g513-led -dv $VendorID -dp $ProductID -k A $DMENU_SCRIPTS
+        g513-led -dv $VendorID -dp $ProductID -k C $DMENU_SCRIPTS
+        g513-led -dv $VendorID -dp $ProductID -k B $DMENU_SCRIPTS
+        g513-led -dv $VendorID -dp $ProductID -k W $DMENU_SCRIPTS
+        g513-led -dv $VendorID -dp $ProductID -k M $DMENU_SCRIPTS
+        g513-led -dv $VendorID -dp $ProductID -k F8 $DMENU_SCRIPTS
+        g513-led -dv $VendorID -dp $ProductID -k print $DMENU_SCRIPTS
+#   Programs
+        g513-led -dv $VendorID -dp $ProductID -k T $PROGRAMS
+        g513-led -dv $VendorID -dp $ProductID -k E $PROGRAMS
+        g513-led -dv $VendorID -dp $ProductID -k V $PROGRAMS
+        g513-led -dv $VendorID -dp $ProductID -k X $PROGRAMS
+        g513-led -dv $VendorID -dp $ProductID -k F1 $PROGRAMS
+        g513-led -dv $VendorID -dp $ProductID -k F2 $PROGRAMS
+#   Special
+        g513-led -dv $VendorID -dp $ProductID -k escape $SPECIAL
+        g513-led -dv $VendorID -dp $ProductID -k winleft $SPECIAL
+#   Scripts
+        g513-led -dv $VendorID -dp $ProductID -k G $SCRIPTS
+        g513-led -dv $VendorID -dp $ProductID -k F3 $SCRIPTS
+        g513-led -dv $VendorID -dp $ProductID -k F4 $SCRIPTS
+        g513-led -dv $VendorID -dp $ProductID -k Y $SCRIPTS
+        g513-led -dv $VendorID -dp $ProductID -k N $SCRIPTS
+        g513-led -dv $VendorID -dp $ProductID -k D $SCRIPTS
+#   System
+        g513-led -dv $VendorID -dp $ProductID -k shift_left $SYSTEM
+        g513-led -dv $VendorID -dp $ProductID -k ctrl_left $SYSTEM
+        g513-led -dv $VendorID -dp $ProductID -k alt_left $SYSTEM
+        g513-led -dv $VendorID -dp $ProductID -k Q $SYSTEM
+        g513-led -dv $VendorID -dp $ProductID -k R $SYSTEM
+        g513-led -dv $VendorID -dp $ProductID -k tab $SYSTEM
+#   Music
+        g513-led -dv $VendorID -dp $ProductID -k F9 $MUSIC
+        g513-led -dv $VendorID -dp $ProductID -k F10 $MUSIC
+        g513-led -dv $VendorID -dp $ProductID -k F11 $MUSIC
+        g513-led -dv $VendorID -dp $ProductID -k F12 $MUSIC
+#   NUM
+        g513-led -dv $VendorID -dp $ProductID -k num0 $NUM_NUM
+        g513-led -dv $VendorID -dp $ProductID -k num1 $NUM_NUM
+        g513-led -dv $VendorID -dp $ProductID -k num2 $NUM_NUM
+        g513-led -dv $VendorID -dp $ProductID -k num3 $NUM_NUM
+        g513-led -dv $VendorID -dp $ProductID -k num4 $NUM_NUM
+        g513-led -dv $VendorID -dp $ProductID -k num5 $NUM_NUM
+        g513-led -dv $VendorID -dp $ProductID -k num6 $NUM_NUM
+        g513-led -dv $VendorID -dp $ProductID -k num7 $NUM_NUM
+        g513-led -dv $VendorID -dp $ProductID -k num8 $NUM_NUM
+        g513-led -dv $VendorID -dp $ProductID -k num9 $NUM_NUM
+        
+        g513-led -dv $VendorID -dp $ProductID -k num_lock $NUM_OP
+        g513-led -dv $VendorID -dp $ProductID -k num_slash $NUM_OP
+        g513-led -dv $VendorID -dp $ProductID -k num_asterisk $NUM_OP
+        g513-led -dv $VendorID -dp $ProductID -k num_minus $NUM_OP
+        g513-led -dv $VendorID -dp $ProductID -k num_plus $NUM_OP
+        g513-led -dv $VendorID -dp $ProductID -k numenter $NUM_OP
+        g513-led -dv $VendorID -dp $ProductID -k num_dot $NUM_OP
+        g513-led -dv $VendorID -dp $ProductID -k insert $NUM_OP
+        g513-led -dv $VendorID -dp $ProductID -k delete $NUM_OP
+        g513-led -dv $VendorID -dp $ProductID -k home $NUM_OP
+        g513-led -dv $VendorID -dp $ProductID -k end $NUM_OP
+        g513-led -dv $VendorID -dp $ProductID -k page_up $NUM_OP
+        g513-led -dv $VendorID -dp $ProductID -k page_down $NUM_OP ;;
+
+    --wave )
+        g513-led -dv $VendorID -dp $ProductID -fx cwave all 5 ;;
+    --manuel )
+        g513-led -dv $VendorID -dp $ProductID -tuk 1 -a $( yad --color | tail -c 7 ) ;;
+    --help )
+        echo "coming soon" ;;
+esac
