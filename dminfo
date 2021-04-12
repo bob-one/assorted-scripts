@@ -8,7 +8,8 @@ WINDOW_MANAGER=$( echo $DESKTOP_SESSION )
 TERMINAL_EMULATOR=$( echo $TERM )
 CPU=$( bat /proc/cpuinfo | awk 'NR==5 {print $4 " " $5 " " $6}' )
 CPU_THREADS=$( bat /proc/cpuinfo | awk 'NR==11 {print $3}' )
-CPU_FREQUENCY=$( bat /proc/cpuinfo | awk 'NR==8 {print $4}' )
+CPU_FREQUENCY=$( lscpu | awk 'NR==17 {print $4}' )
+CPU_TEMP=$(( $( cat /sys/class/thermal/thermal_zone0/temp ) / 1000 ))
 GPU="$(lspci -mm | awk -F '\"|\" \"|\\(' \
                             '/"Display|"3D|"VGA/ {a[$0] = $1 " " $3 " " $4}
                             END {for(i in a) {if(!seen[a[i]]++) print a[i]}}' | awk '{print $2 " " $3 " " $4 " " $5 " " $6 " " $7}')"
@@ -27,6 +28,7 @@ declare -a INFO=(
 "terminal:              $TERMINAL_EMULATOR"
 "Installed Packages:    $PACKAGES_INSTALLED"
 "cpu:                   $CPU ($CPU_THREADS) @ $CPU_FREQUENCY MHz"
+"cpu temperature:       $CPU_TEMP°C"
 "gpu:                   $GPU"
 "memory:                $MEM_USED / $MEM_TOTAL"
 "Motherboard            $MOTHERBOARD_VENDOR $MOTHERBOARD_NAME $MOTHERBOARD_REV"
