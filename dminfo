@@ -1,18 +1,31 @@
 #!/bin/env bash
-
+# Div System
 OS=$( lsb_release -a | awk 'NR==2 {print $3 " \"Just keep rolling\"" }' )
 KERNEL=$( uname -r )
 PACKAGES_INSTALLED=$( pacman -Q | wc -l )
 SHELL_VERSION=$( "$SHELL" --version | awk '{print $1 " " $2}')
 WINDOW_MANAGER=$( echo $DESKTOP_SESSION )
 TERMINAL_EMULATOR=$( echo $TERM )
+
+# CPU
 CPU=$( bat /proc/cpuinfo | awk 'NR==5 {print $4 " " $5 " " $6}' )
+CPU_CORE_0_TEMP=$(sensors | awk 'NR==4 {print $3}')
+CPU_CORE_1_TEMP=$(sensors | awk 'NR==5 {print $3}')
+CPU_CORE_2_TEMP=$(sensors | awk 'NR==6 {print $3}')
+CPU_CORE_3_TEMP=$(sensors | awk 'NR==7 {print $3}')
 CPU_THREADS=$( bat /proc/cpuinfo | awk 'NR==11 {print $3}' )
 CPU_FREQUENCY=$( lscpu | awk 'NR==17 {print $4}' )
-CPU_TEMP=$(( $( cat /sys/class/thermal/thermal_zone0/temp ) / 1000 ))
-GPU="$(lspci -mm | awk -F '\"|\" \"|\\(' \
-                            '/"Display|"3D|"VGA/ {a[$0] = $1 " " $3 " " $4}
-                            END {for(i in a) {if(!seen[a[i]]++) print a[i]}}' | awk '{print $2 " " $3 " " $4 " " $5 " " $6 " " $7}')"
+
+# GPU
+GPU_NAME=$(nvidia-smi | awk 'NR==9 {print $3 " " $4 " " $5}')
+GPU_DRIVER=$(nvidia-smi | awk 'NR==3 {print $4 " " $5 " " $6}')
+CUDA_VERSION=$(nvidia-smi | awk 'NR==3 {print $7 " " $8 " " $9}')
+GPU_FAN=$(nvidia-smi | awk 'NR==10 {print $2}')
+GPU_TEMP=$(nvidia-smi | awk 'NR==10 {print $3}')
+GPU_POWER=$(nvidia-smi | awk 'NR==10 {print $5 " / " $7}')
+GPU_RAM=$(nvidia-smi | awk 'NR==10 {print $9 " / " $11}')
+GPU_UTIL=$(nvidia-smi | awk 'NR==10 {print $13}')
+
 MEM_TOTAL=$( free -mh | awk 'NR==2 {print $2}' )
 MEM_USED=$( free -mh | awk 'NR==2 {print $3}' )
 
@@ -27,16 +40,20 @@ declare -a INFO=(
 "shell:                 $SHELL_VERSION"
 "terminal:              $TERMINAL_EMULATOR"
 "Installed Packages:    $PACKAGES_INSTALLED"
-"cpu:                   $CPU ($CPU_THREADS) @ $CPU_FREQUENCY MHz"
-"cpu temperature:       $CPU_TEMP°C"
-"gpu:                   $GPU"
 "memory:                $MEM_USED / $MEM_TOTAL"
 "Motherboard            $MOTHERBOARD_VENDOR $MOTHERBOARD_NAME $MOTHERBOARD_REV"
+"cpu:                   $CPU ($CPU_THREADS) @ $CPU_FREQUENCY MHz"
+"cpu temperature:       Core0      Core1      Core2      Core3"
+"                       $CPU_CORE_0_TEMP    $CPU_CORE_1_TEMP    $CPU_CORE_2_TEMP    $CPU_CORE_3_TEMP"
+"gpu:                   $GPU_NAME - $GPU_DRIVER - $CUDA_VERSION"
+"gpu info:              Fan:   temp:   power:      ram:              GPU:"
+"                       $GPU_FAN    $GPU_TEMP     $GPU_POWER  $GPU_RAM  $GPU_UTIL"
+""
 "Filesystem             -->"
 "Processes              --->"
 )
 
-CHOICE=$(printf '%s\n' "${INFO[@]}" | dmenu -i -l 20 -p 'test' | awk '{print $2}')
-[[ "$CHOICE" = "-->" ]] && ( df -Ph | dmenu -i -l 20 -p 'File System: ' )
+CHOICE=$(printf '%s\n' "${INFO[@]}" | dmenu -i -l 25 -p 'test' | awk '{print $2}')
+[[ "$CHOICE" = "-->" ]] && ( df -Ph | dmenu -i -l 25 -p 'File System: ' )
 [[ "$CHOICE" = "--->" ]] && ( dmkill )
 [[ "$CHOICE" ]] && exit || exit
