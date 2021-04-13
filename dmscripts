@@ -1,0 +1,45 @@
+#!/bin/env bash
+
+# Get the path to where this script is run from and asigning it the the variable $SCRIPT_PATH
+# In case it's a symlink: Resolve $SOURCE until the it's no longer a symlink
+# If $SOURCE was a relative symlink, resolve it relative to the path where the symlink was located
+SOURCE="${BASH_SOURCE[0]}"
+while [ -h "$SOURCE" ]; do
+    SCRIPT_PATH="$( cd -P "$( dirname "$SOURCE" )" >/dev/null 2>&1 && pwd )"
+    SOURCE="$(readlink "$SOURCE")"
+    [[ $SOURCE != /* ]] && SOURCE="$SCRIPT_PATH/$SOURCE"
+done
+SCRIPT_PATH="$( cd -P "$( dirname "$SOURCE" )" >/dev/null 2>&1 && pwd )"
+
+declare -a LIST=(
+"dmconfig             $HOME/Scripts/Programs/assorted-scripts/dmconfig"
+"dmlof                $HOME/Scripts/Programs/assorted-scripts/dmlof"
+"dmnet                $HOME/Scripts/Programs/assorted-scripts/dmnet"
+"dmbook               $HOME/Scripts/Programs/assorted-scripts/dmbook"
+"dminfo               $HOME/Scripts/Programs/assorted-scripts/dminfo"
+"dmkill               $HOME/Scripts/Programs/assorted-scripts/dmkill"
+"dmwork               $HOME/Scripts/Programs/assorted-scripts/dmwork"
+"dmmount              $HOME/Scripts/Programs/assorted-scripts/dmmount"
+"dmumount             $HOME/Scripts/Programs/assorted-scripts/dmumount"
+"dmscrot              $HOME/Scripts/Programs/assorted-scripts/dmscrot"
+"dmsites              $HOME/Scripts/Programs/assorted-scripts/dmsites"
+"dmcolors             $HOME/Scripts/Programs/assorted-scripts/dmcolors"
+"dmsearch             $HOME/Scripts/Programs/assorted-scripts/dmsearch"
+"dmscripts            $HOME/Scripts/Programs/assorted-scripts/dmscripts"
+"dmunicode            $HOME/Scripts/Programs/assorted-scripts/dmunicode"
+"dmchangedesktop      $HOME/Scripts/Programs/assorted-scripts/dmchangedesktop"
+"mam                  $HOME/Scripts/Programs/assorted-scripts/mam.sh"
+"mann                 $HOME/Scripts/Programs/assorted-scripts/mann.sh"
+"open                 $HOME/Scripts/Programs/assorted-scripts/open.sh"
+"extract              $HOME/Scripts/Programs/assorted-scripts/extract.sh"
+"notetaker            $HOME/Scripts/Programs/assorted-scripts/notetaker.sh"
+"g513_keyboard_led    $HOME/Scripts/Programs/assorted-scripts/g513_keyboard_led"
+"wall                 $HOME/Scripts/Programs/wallpaper-changer/wall.sh"
+"weather              $HOME/Scripts/Programs/weather.sh"
+"weather-yr           $HOME/Scripts/Programs/Weather/weather-yr.sh"
+"buildmd              $HOME/Scripts/Programs/buildmd.sh"
+)
+
+CONFIG=$(printf '%s\n' "${LIST[@]}" | dmenu -i -l 30 -p "Search configs" | awk '{print $2}')
+[[ "$CONFIG" = "" ]] && ( exit )
+[[ "$CONFIG" ]] && ( alacritty -e nvim $CONFIG 2&>/dev/null )

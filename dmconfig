@@ -33,8 +33,12 @@ declare -a LIST=(
 "doom-emacs-config    $HOME/.doom.d/config.el"
 "doom-emacs-packages  $HOME/.doom.d/packages.el"
 "dmenu                $HOME/Programs/Git/suckless-builds/dmenu/config.h"
+"starship             $HOME/.config/starship.toml"
+"picom                $HOME/.config/picom/picom.conf"
+"picom-xmonad         $HOME/.xmonad/scripts/picom.conf"
+"mailspring           $HOME/.config/Mailspring/config.json"
 )
 
 CONFIG=$(printf '%s\n' "${LIST[@]}" | dmenu -i -l 20 -p "Search configs" | awk '{print $2}')
 [[ "$CONFIG" = "" ]] && ( exit )
-[[ "$CONFIG" ]] && ( neovide $CONFIG 2&>/dev/null )
+[[ "$CONFIG" ]] && ( alacritty -e nvim $CONFIG 2&>/dev/null )
