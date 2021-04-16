@@ -18,7 +18,7 @@ REST=727272
 SPECIAL=ffff00
 
 case $COLOR in
-    --game )
+    -game )
         g513-led -dv $VendorID -dp $ProductID -tuk 1 -a 9090ff
         g513-led -dv $VendorID -dp $ProductID -k W ff00ff
         g513-led -dv $VendorID -dp $ProductID -k A ff7c00
@@ -35,7 +35,7 @@ case $COLOR in
         g513-led -dv $VendorID -dp $ProductID -k ctrl_right 00ff00
         g513-led -dv $VendorID -dp $ProductID -k alt_left 00ff00
         g513-led -dv $VendorID -dp $ProductID -k alt_right 00ff00 ;;
-    --vim )
+    -vim )
         g513-led -dv $VendorID -dp $ProductID -tuk 1 -a f0ff00
         g513-led -dv $VendorID -dp $ProductID -k period 0000ff
         g513-led -dv $VendorID -dp $ProductID -k winleft ff00ff
@@ -68,7 +68,7 @@ case $COLOR in
         g513-led -dv $VendorID -dp $ProductID -k Q 0000ff
         g513-led -dv $VendorID -dp $ProductID -k Z 0000ff ;;
 
-    --sxhkd )
+    -sxhkd )
         g513-led -dv $VendorID -dp $ProductID -tuk 1 -a $REST
 #   Desktops
         g513-led -dv $VendorID -dp $ProductID -k 1 $DESKTOPS
@@ -102,10 +102,13 @@ case $COLOR in
         g513-led -dv $VendorID -dp $ProductID -k B $DMENU_SCRIPTS
         g513-led -dv $VendorID -dp $ProductID -k W $DMENU_SCRIPTS
         g513-led -dv $VendorID -dp $ProductID -k M $DMENU_SCRIPTS
+        g513-led -dv $VendorID -dp $ProductID -k comma $DMENU_SCRIPTS
+        g513-led -dv $VendorID -dp $ProductID -k period $DMENU_SCRIPTS
         g513-led -dv $VendorID -dp $ProductID -k F8 $DMENU_SCRIPTS
         g513-led -dv $VendorID -dp $ProductID -k print $DMENU_SCRIPTS
 #   Programs
         g513-led -dv $VendorID -dp $ProductID -k T $PROGRAMS
+        g513-led -dv $VendorID -dp $ProductID -k F $PROGRAMS
         g513-led -dv $VendorID -dp $ProductID -k E $PROGRAMS
         g513-led -dv $VendorID -dp $ProductID -k V $PROGRAMS
         g513-led -dv $VendorID -dp $ProductID -k X $PROGRAMS
