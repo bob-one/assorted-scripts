@@ -14,7 +14,7 @@ else
     [[ ! -f $PDF_NOTE ]] && ( touch $PDF_NOTE)
 
     alacritty -t Notes -e nvim -c "norm G2o" \
-         -c "norm Go## $(date +%H:%M:%S)" \
+         -c "norm Go## $(date +%A.%d.%b-%H:%M:%S)" \
          -c "norm Go" \
          -c "norm zz" $MD_NOTE
     
