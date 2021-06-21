@@ -1,0 +1,27 @@
+#!/bin/env bash 
+NOTEBOOK_MD_DIR="$HOME/Documents/Notes"
+NOTEBOOK_PDF_DIR="$HOME/Documents/Notes/pdf"
+
+shopt -s nullglob
+NOTEBOOKS=($NOTEBOOK_MD_DIR/*)
+PDF_LIST=($NOTEBOOK_PDF_DIR/*)
+
+open_notebook() {
+    [[ ! -f "$MD_NOTE" ]] && ( echo -e "---\ntitle: $SELECTION\ngeometry: margin=3cm\n---" > $MD_NOTE)
+    [[ ! -f "$PDF_NOTE" ]] && ( touch $PDF_NOTE)
+    alacritty -t Notes -e nvim -c "norm G2o" \
+        -c "norm zz" $MD_NOTE
+    pandoc -o $PDF_NOTE $MD_NOTE &
+    exit 1
+}
+
+if [[ "$1" == "v" ]]; then
+    PDF=$(printf '%s\n' "${PDF_LIST[@]}" | awk -F "/" '{print $NF}' | dmenu -i -c -l 20 -p "PDF Notebooks: ")
+    [[ ! "PDF" ]] && ( exit 1 ) || ( zathura $NOTEBOOK_PDF_DIR/$PDF )
+elif [[ ! "$1" == "v" ]]; then
+    SELECTION=$(printf '%s\n' "${NOTEBOOKS[@]}" | awk -F "/" '{print $NF}' | awk -F "." '{print $1}' |dmenu -i -c -l 20 -p "Notebooks: ")
+    [[ ! "$SELECTION" ]] && exit 1
+    MD_NOTE="$NOTEBOOK_MD_DIR/$SELECTION.md"
+    PDF_NOTE="$NOTEBOOK_PDF_DIR/$SELECTION.pdf"
+    open_notebook
+fi

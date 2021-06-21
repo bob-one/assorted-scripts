@@ -1,0 +1,35 @@
+#!/bin/env bash
+
+TERMINAL="alacritty -e"
+EDITOR="nvim"
+B_SHEBANG="#!/bin/env bash"
+P_SHEBANG="#!/usr/bin/env python3"
+
+declare -a dirlist=(
+"assorted-scripts           $HOME/Scripts/Programs/assorted-scripts"
+"Programs                   $HOME/Scripts/Programs"
+"Hardware                   $HOME/Scripts/Hardware"
+"Network                    $HOME/Scripts/Network"
+)
+
+declare -a script_alt=(
+"bash       #!/bin/env bash"
+"python     #!/usr/bin/env python3"
+)
+
+while [ -z "$DIRECTORY" ]; do
+    DIRECTORY=$(printf '%s\n' "${dirlist[@]}" | dmenu -i -l 20 -p 'Choose destination directory: ' | awk '{print $NF}') || exit
+done
+
+while [ -z "$SCRIPT_LANGUAGE" ]; do
+    SCRIPT_LANGUAGE=$(printf '%s\n' "${script_alt[@]}" | dmenu -i -l 20 -p 'Choose scripting language: ' | awk '{print $2 " " $3}') || exit
+done
+
+while [ -z "$SCRIPT_NAME" ]; do
+    SCRIPT_NAME=$(echo "" | dmenu -p 'Enter script name: ') || exit
+done
+
+touch $DIRECTORY/$SCRIPT_NAME
+echo -e "$SCRIPT_LANGUAGE" > $DIRECTORY/$SCRIPT_NAME
+sudo chmod +x $DIRECTORY/$SCRIPT_NAME
+$TERMINAL $EDITOR $DIRECTORY/$SCRIPT_NAME

@@ -2,7 +2,16 @@
 ini_path="/home/andre/Scripts/Programs/assorted-scripts"
 source <(grep = $ini_path/g513_keyboard_ID.ini)
 
-[[ '$1' = '' ]] && ( echo "Read the script!"; exit ) || COLOR=$1
+while getopts "sgvwm" opt; do
+    case ${opt} in
+        s ) COLOR="sxhkd";;
+        g ) COLOR="game";;
+        v ) COLOR="vim";;
+        w ) COLOR="wave";;
+        m ) COLOR="manuel";;
+        /? ) echo "Invalid Option: "; exit 1;;
+    esac
+done
 
 SCRIPTS=00ffff
 DMENU_SCRIPTS=1212ff
@@ -18,7 +27,7 @@ REST=727272
 SPECIAL=ffff00
 
 case $COLOR in
-    -game )
+    game )
         g513-led -dv $VendorID -dp $ProductID -tuk 1 -a 9090ff
         g513-led -dv $VendorID -dp $ProductID -k W ff00ff
         g513-led -dv $VendorID -dp $ProductID -k A ff7c00
@@ -35,7 +44,7 @@ case $COLOR in
         g513-led -dv $VendorID -dp $ProductID -k ctrl_right 00ff00
         g513-led -dv $VendorID -dp $ProductID -k alt_left 00ff00
         g513-led -dv $VendorID -dp $ProductID -k alt_right 00ff00 ;;
-    -vim )
+    vim )
         g513-led -dv $VendorID -dp $ProductID -tuk 1 -a f0ff00
         g513-led -dv $VendorID -dp $ProductID -k period 0000ff
         g513-led -dv $VendorID -dp $ProductID -k winleft ff00ff
@@ -68,7 +77,7 @@ case $COLOR in
         g513-led -dv $VendorID -dp $ProductID -k Q 0000ff
         g513-led -dv $VendorID -dp $ProductID -k Z 0000ff ;;
 
-    -sxhkd )
+    sxhkd )
         g513-led -dv $VendorID -dp $ProductID -tuk 1 -a $REST
 #   Desktops
         g513-led -dv $VendorID -dp $ProductID -k 1 $DESKTOPS
@@ -162,10 +171,8 @@ case $COLOR in
         g513-led -dv $VendorID -dp $ProductID -k page_up $NUM_OP
         g513-led -dv $VendorID -dp $ProductID -k page_down $NUM_OP ;;
 
-    --wave )
+    wave )
         g513-led -dv $VendorID -dp $ProductID -fx cwave all 5 ;;
-    --manuel )
+    manuel )
         g513-led -dv $VendorID -dp $ProductID -tuk 1 -a $( yad --color | tail -c 7 ) ;;
-    --help )
-        echo "coming soon" ;;
 esac

@@ -1,0 +1,35 @@
+#!/bin/env bash
+
+PATH_ASS_SCR=$HOME/Scripts/Programs/assorted-scripts
+PATH_WAL_CHG=$HOME/Scripts/Programs/wallpaper-changer
+
+cd $PATH_ASS_SCR
+ASS_SCR=$(git status $PATH_ASS_SCR/ | awk 'NR==4 {print $1}')
+
+cd $PATH_WAL_CHG
+WAL_SCR=$(git status $PATH_WAL_CHG/ | awk 'NR==4 {print $1}')
+
+if [[ "$ASS_SCR" == "nothing" ]]; then
+    STATUS_ASS_SCR="Nothing to commit"
+elif [[ "$ASS_SCR" == "Changes" ]]; then
+    STATUS_ASS_SCR="Changes have been made, time to backup"
+fi
+
+if [[ "$WAL_SCR" == "nothing" ]]; then
+    STATUS_WAL_SCR="Nothing to commit"
+elif [[ "$WAL_SCR" == "Changes" ]]; then
+    STATUS_WAL_SCR="Changes have been made, time to backup"
+fi
+
+declare -a statuslist=(
+"assorted-scripts:  $STATUS_ASS_SCR"
+"wallpaper-changer: $STATUS_WAL_SCR"
+)
+
+DEST=$(printf '%s\n' "${statuslist[@]}" | dmenu -i -l 40 -p 'Git Status: ' | awk '{print $1}' || exit)
+echo $DEST
+if [[ "$DEST" == "assorted-scripts:" ]]; then
+    alacritty --working-directory $PATH_ASS_SCR/
+elif [[ "$DEST" == "wallpaper-changer:" ]]; then
+    alacritty --working-directory $PATH_WAL_CHG/
+fi

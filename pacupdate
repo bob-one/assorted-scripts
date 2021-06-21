@@ -1,0 +1,4 @@
+#!/bin/env bash
+
+cupd=$(checkupdates | wc -l)
+echo "$cupd updates"

@@ -1,20 +1,22 @@
 #!/bin/sh
 
-MD_NOTE="$HOME/Documents/Notes/markdowns/note-$(date +%y%m%d).md"
-PDF_NOTE="$HOME/Documents/Notes/pdf/note-$(date +%y%m%d).pdf"
+MD_NOTE="$HOME/Documents/Diary/$(date +%Y-%m).md"
+PDF_NOTE="$HOME/Documents/Diary/pdf/$(date +%Y-%m).pdf"
+PDF_DIR="$HOME/Documents/Diary/pdf"
 
-if [[ "$1" = "v" ]]; then
-    zathura $PDF_NOTE
-    exit
+if [[ "$1" == "v" ]]; then
+    PDF_LIST=($PDF_DIR/*)
+    PDF=$(printf '%s\n' "${PDF_LIST[@]}" | awk -F "/" '{print $NF}' | dmenu -i -c -l 20 -p "PDF diary: ")
+    [[ ! "$PDF" ]] && exit 1 || zathura "$PDF_DIR/$PDF"
+
 else
-    [[ ! -f $MD_NOTE ]] && ( echo -e "---\ntitle: Notater\ndate: $(date +%A-%d-%m-%y)\ngeometry: margin=3cm\n---" > $MD_NOTE)
+    [[ ! -f $MD_NOTE ]] && ( echo -e "---\ntitle: Diary\nauthor: André Rønning\ndate: $(date +%B-%Y)\ngeometry: margin=3cm\n---" > $MD_NOTE)
     [[ ! -f $PDF_NOTE ]] && ( touch $PDF_NOTE)
 
     alacritty -t Notes -e nvim -c "norm G2o" \
          -c "norm Go## $(date +%H:%M:%S)" \
          -c "norm Go" \
-         -c "norm zz" \
-         -c "startinsert" $MD_NOTE
+         -c "norm zz" $MD_NOTE
     
     pandoc -o $PDF_NOTE $MD_NOTE &
 fi
