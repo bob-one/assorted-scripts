@@ -12,10 +12,10 @@ createMarkDown () {
     for line in ${array[@]}
     do
         if [[ "$line" != "" ]]; then
-            money=$(echo "$line" | awk -F ":" '{print $1}')
-            desc=$(echo "$line" | awk -F ":" '{print $2}')
-            mark=$(echo "$line" | awk -F ":" '{print $3}') # b=bills, f=food, c=clothes, l=luxoury, s=subscriptions, i=income, t=tobacco
-            date=$(date +%Y-%m-%d)
+            money=$(echo "$line" | awk -F ":" '{print $2}')
+            desc=$(echo "$line" | awk -F ":" '{print $3}')
+            date=$(echo "$line" | awk -F ":" '{print $1}')
+            mark=$(echo "$line" | awk -F ":" '{print $4}') # b=bills, f=food, c=clothes, l=luxoury, s=subscriptions, i=income, t=tobacco
             
             if [[ $money -gt 0 ]]; then
                 totalIn=$(( totalIn + money ))
@@ -52,12 +52,7 @@ createMarkDown () {
     echo "![pie-chart]($PIE_CHART)" >> $MD_NOTE
 
     pandoc -o $PDF_NOTE $MD_NOTE &
-    
 }
-# create table in markdown with coloumns: deposit, withdraws, reason, date from the values inputted in main file
-# calculate total deposits, total withdraws and balance trend for each month
-# create pdf with table and calculations
-# also include pie chart with bills, food, clothes and luxoury
 
 if [[ "$1" == "v" ]]; then
     PDF_LIST=($PDF_DIR/*)
@@ -69,16 +64,19 @@ else
     [[ ! -f $MD_NOTE ]] && ( echo -e "---\ntitle: Financial Report\nauthor: André Rønning\ndate: $(date +%B-%Y)\ngeometry: margin=3cm\n---\n\n" > $MD_NOTE)
     [[ ! -f $PDF_NOTE ]] && (touch $PDF_NOTE)
 
-    alacritty -t Notes -e nvim -c "norm Go" \
-         -c "norm zz" $NOTE
+    alacritty -t Notes -e nvim -c "norm Go $(date +%Y-%m-%d:)" \
+         -c "norm 0x" \
+         -c "norm A" \
+         -c "norm zz" \
+         -c "startinsert" $NOTE
     createMarkDown    
 fi
 
-# I make sure that ~/.local/bin/ or ~/.local/share/ is in my path
-# and symlink it to one of these locations as n
-# Then i add {'wname': 'Notes'}, to my floating_rules in the Qtile config
-# now I can add it to a keybinding in sxhkd or call it from the terminal
-# and open up a floating window, in vim, to take notes in using markdown
-# and each new day a new file is created using that days date in the filename
-# also each entry gets timestamped automatically inside the document
-# I use the keybinding super n to open it in vim, and super shift n to view the pdf version of it
+# Example for logging expence or deposits
+# The date is inserted for you
+# date:amount:reason:category
+# 2021-06-24:4000:Sold my body:i
+# 2021-06-24:-4000:Icecream:l
+
+# Categories
+# b=bills, f=food, c=clothes, l=luxoury, s=subscriptions, i=income, t=tobacco
