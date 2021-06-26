@@ -13,9 +13,9 @@ parser.add_argument('-s', '--subscription', type = int, default = 0)
 parser.add_argument('-t', '--tobacco', type = int, default = 0)
 args = parser.parse_args()
 
-def createPlot(b, c, f, l, s, t):
+def createPlot(b = 0, c = 0, f = 0, l = 0, s = 0, t = 0):
     y = np.array([b, c, f, l, s, t])
-    mylabels = [f"Bills {b}", f"Clothes {c}", f"Food {f}", f"Luxoury {l}", f"Subscriptions {s}", f"Tobacco {t}"]
+    mylabels = [f"Bills {b}", f"Clothes {c}", f"Food {f}", f"Luxoury {l}", f"Subscriptions {s}", f"Snus {t}"]
 
     plt.pie(y, labels = mylabels)
     plt.savefig('/home/andre/Documents/Finance/plot/pie.png')

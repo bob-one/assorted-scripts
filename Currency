@@ -1,0 +1,4 @@
+#!/bin/env bash
+printf "%.2f\n" $(curl --no-progress-meter nok.rate.sx/1USD | sed 's/\./,/')
+printf "%.2f\n" $(curl --no-progress-meter nok.rate.sx/1EUR | sed 's/\./,/')
+printf "%.2f\n" $(curl --no-progress-meter nok.rate.sx/1GBP | sed 's/\./,/')

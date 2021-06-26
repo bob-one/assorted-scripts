@@ -11,7 +11,7 @@ createMarkDown () {
     readarray -t array < $NOTE
     for line in ${array[@]}
     do
-        if [[ "$line" != "" ]]; then
+        if [[ "$line" != " " ]]; then
             date=$(echo "$line"  | awk -F ":" '{print $1}')
             money=$(echo "$line" | awk -F ":" '{print $2}')
             desc=$(echo "$line"  | awk -F ":" '{print $3}')
@@ -54,6 +54,13 @@ createMarkDown () {
     echo -e "\n\n| Total in | Total out | Balance |" >> $MD_NOTE
     echo "|----------|-----------|---------|" >> $MD_NOTE
     echo -e "| $totalIn | $totalOut | $balance |\n\n" >> $MD_NOTE
+    
+    [[ ! "$bill" ]] && bill=0
+    [[ ! "$clothes" ]] && clothes=0
+    [[ ! "$food" ]] && food=0
+    [[ ! "$luxoury" ]] && luxoury=0
+    [[ ! "$subscriptions" ]] && subscriptions=0
+    [[ ! "$tobacco" ]] && tobacco=0
 
     /usr/bin/python $HOME/Scripts/Programs/assorted-scripts/create_financial_plot.py -b $bill -c $clothes -f $food -l $luxoury -s $subscriptions -t $tobacco
     echo "![pie-chart]($PIE_CHART)" >> $MD_NOTE
