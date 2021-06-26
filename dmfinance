@@ -51,8 +51,8 @@ createMarkDown () {
     done
 
     balance=$(( totalIn + totalOut ))
-    echo -e "\n\n| Total in | Total out | Balance |" >> $MD_NOTE
-    echo "|----------|-----------|---------|" >> $MD_NOTE
+    echo -e "\n\n| Total income in $(date +%B) | Total expences in $(date +%B) | Current Balance |" >> $MD_NOTE
+    echo "|-------------------------|-------------------|-----------------|" >> $MD_NOTE
     echo -e "| $totalIn | $totalOut | $balance |\n\n" >> $MD_NOTE
     
     [[ ! "$bill" ]] && bill=0
