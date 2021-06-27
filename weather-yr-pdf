@@ -6,9 +6,9 @@ DATE="$(date +%Y-%m-%d)"
 GEO_LOCATION=$(cat "$HOME/Documents/yr-location")
 
 if [[ "$1" == "v" ]]; then
-    SELECTION=$(printf '%s\n' "${YR_PDF[@]}" | dmenu -i -c -l 20 -p "Weather files: ")
+    SELECTION=$(printf '%s\n' "${YR_PDF[@]}" | awk -F "/" '{print $NF}' | dmenu -i -c -l 20 -p "Weather files: ")
     [[ ! "$SELECTION" ]] && exit 1
-    devour zathura $SELECTION
+    devour zathura "$WEATHERPATH/$SELECTION"
 elif [[ ! -f "$WEATHERPATH/$DATE-forecast.pdf" ]]; then
     cd $HOME/Documents/vær
     wget -O "$DATE-forecast.pdf" "$GEO_LOCATION"
