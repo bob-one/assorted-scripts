@@ -1,4 +1,6 @@
 #!/bin/env bash
-printf "%.2f\n" $(curl --no-progress-meter nok.rate.sx/1USD | sed 's/\./,/')
-printf "%.2f\n" $(curl --no-progress-meter nok.rate.sx/1EUR | sed 's/\./,/')
-printf "%.2f\n" $(curl --no-progress-meter nok.rate.sx/1GBP | sed 's/\./,/')
+USD=$(printf "%.2f\n" $(curl --no-progress-meter nok.rate.sx/1USD | sed 's/\./,/'))
+EUR=$(printf "%.2f\n" $(curl --no-progress-meter nok.rate.sx/1EUR | sed 's/\./,/'))
+GBP=$(printf "%.2f\n" $(curl --no-progress-meter nok.rate.sx/1GBP | sed 's/\./,/'))
+
+echo "NOK in USD: $USD, EUR: $EUR, GBP: $GBP"
