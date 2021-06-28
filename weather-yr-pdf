@@ -1,21 +1,17 @@
 #!/bin/env bash
 shopt -s nullglob
-WEATHERPATH="$HOME/Documents/vær"
-YR_PDF=($WEATHERPATH/*)
+WEATHERPATH="/tmp/weather"
+OTHER_WEATHER_PATH="/tmp/weather/other"
 DATE="$(date +%Y-%m-%d)"
-GEO_LOCATION=$(cat "$HOME/Documents/yr-location")
-
-
-olderData () {
-    SELECTION=$(printf '%s\n' "${YR_PDF[@]}" | awk -F "/" '{print $NF}' | dmenu -i -c -l 20 -p "Weather files: ")
-    [[ ! "$SELECTION" ]] && exit 1
-    devour zathura "$WEATHERPATH/$SELECTION"
-}
+LOCATION_LIST="$HOME/Documents/WeatherPlaces"
 
 weatherNow () {
+    [[ ! -d "$WEATHERPATH" ]] && ( mkdir -p "$WEATHERPATH" )
+    find $WEATHERPATH -maxdepth 1 -mmin +59 -type f -name "*.pdf" -delete                   # Delete every pdf file older than a hour
+    MAIN_WEATHER_LOCATION=$(printf '%s\n' "${places[0]}" | awk '{print $2}')
     if [[ ! -f "$WEATHERPATH/$DATE-forecast.pdf" ]]; then
-        cd $HOME/Documents/vær
-        wget -O "$DATE-forecast.pdf" "$GEO_LOCATION"
+        cd $WEATHERPATH
+        wget -O "$DATE-forecast.pdf" "$MAIN_WEATHER_LOCATION"
         devour zathura "$WEATHERPATH/$DATE-forecast.pdf"
     else
         devour zathura "$WEATHERPATH/$DATE-forecast.pdf"
@@ -23,48 +19,25 @@ weatherNow () {
 }
 
 viewOtherPlaces () {
-    declare -a places=(
-        "Tromsø"
-        "Bjerkvik"
-        "Bardufoss"
-        "Skitdalshøgda"
-        "Veggfjellet"
-        "E6-Gratangsfjellet"
-    )
     LOCATION=$(printf '%s\n' "${places[@]}" | dmenu -i -c -l 20 -p "Places: ")
     [[ ! "$LOCATION" ]] && exit 1
-    if [[ ! -f "/tmp/$DATE-$LOCATION.pdf" ]]; then
-        case $LOCATION in
-            Tromsø )
-                cd "/tmp"
-                wget -O "$DATE-$LOCATION.pdf" "https://www.yr.no/nb/utskrift/v%C3%A6rvarsel/1-305409/Norge/Troms%20og%20Finnmark/Troms%C3%B8/Troms%C3%B8";;
-            Bjerkvik )
-                cd "/tmp"
-                wget -O "$DATE-$LOCATION.pdf" "https://www.yr.no/nb/utskrift/v%C3%A6rvarsel/1-541925/Norge/Nordland/Narvik/Bjerkvik";;
-            Bardufoss )
-                cd "/tmp"
-                wget -O "$DATE-$LOCATION.pdf" "https://www.yr.no/nb/utskrift/v%C3%A6rvarsel/1-296475/Norge/Troms%20og%20Finnmark/M%C3%A5lselv/Bardufoss";;
-            Skitdalshødga )
-                cd "/tmp"
-                wget -O "$DATE-$LOCATION.pdf" "https://www.yr.no/nb/utskrift/v%C3%A6rvarsel/1-2214107/Norge/Nordland/Narvik/Skitdalsh%C3%B8gda";;
-            Maridalen )
-                cd "/tmp"
-                wget -O "$DATE-$LOCATION.pdf" "https://www.yr.no/nb/utskrift/v%C3%A6rvarsel/1-283059/Norge/Nordland/Evenes/Veggfjellet";;
-            Gratangsfjellet )
-                cd "/tmp"
-                wget -O "$DATE-$LOCATION.pdf" "https://www.yr.no/nb/utskrift/v%C4%A6rvarsel/5-88010/Norge/Troms%20og%20Finnmark/Lavangen/E6%20Gratangsfjellet";;
-        esac
+    [[ ! -d "$OTHER_WEATHER_PATH" ]] && ( mkdir -p "$OTHER_WEATHER_PATH" )
+    find $OTHER_WEATHER_PATH -maxdepth 1 -mmin +59 -type f -name "*.pdf" -delete
+    LOCATION_NAME=$(echo $LOCATION | awk '{print $1}')
+    LOCATION_URL=$(echo $LOCATION | awk '{print $2}')
+    if [[ ! -f "$OTHER_WEATHER_PATH/$DATE-$LOCATION_NAME.pdf" ]]; then
+        cd $OTHER_WEATHER_PATH
+        wget -O "$DATE-$LOCATION_NAME.pdf" "$LOCATION_URL"
     fi
-    devour zathura "/tmp/$DATE-$LOCATION.pdf"
+    devour zathura "$OTHER_WEATHER_PATH/$DATE-$LOCATION_NAME.pdf"
 }
 
-while getopts "nod" opt
+mapfile -t places < "$LOCATION_LIST"
+while getopts "nd" opt
 do
     case ${opt} in
         n ) weatherNow;; # n for now
-        o ) olderData;; # o for older
-        d ) viewOtherPlaces;; # d for different place
+        d ) viewOtherPlaces;; # d for different places
         /? ) echo "Invalid Option: "; exit 1;;
     esac
 done
-

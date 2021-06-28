@@ -10,6 +10,7 @@ declare -a dirlist=(
 "Programs                   $HOME/Scripts/Programs"
 "Hardware                   $HOME/Scripts/Hardware"
 "Network                    $HOME/Scripts/Network"
+"Temp                       $HOME/Scripts/Temp"
 )
 
 declare -a script_alt=(
