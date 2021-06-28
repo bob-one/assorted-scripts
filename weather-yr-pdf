@@ -31,31 +31,31 @@ viewOtherPlaces () {
         "Veggfjellet"
         "E6-Gratangsfjellet"
     )
-    LOCATION=$(printf '%s\n' "${places[@]}" | dmenu -i -l 20 -p "Places: ")
+    LOCATION=$(printf '%s\n' "${places[@]}" | dmenu -i -c -l 20 -p "Places: ")
     [[ ! "$LOCATION" ]] && exit 1
-    if [[ ! -f "/tmp/$LOCATION" ]]; then
+    if [[ ! -f "/tmp/$DATE-$LOCATION.pdf" ]]; then
         case $LOCATION in
             Tromsø )
                 cd "/tmp"
                 wget -O "$DATE-$LOCATION.pdf" "https://www.yr.no/nb/utskrift/v%C3%A6rvarsel/1-305409/Norge/Troms%20og%20Finnmark/Troms%C3%B8/Troms%C3%B8";;
             Bjerkvik )
                 cd "/tmp"
-                wget "https://www.yr.no/nb/utskrift/v%C3%A6rvarsel/1-541925/Norge/Nordland/Narvik/Bjerkvik";;
+                wget -O "$DATE-$LOCATION.pdf" "https://www.yr.no/nb/utskrift/v%C3%A6rvarsel/1-541925/Norge/Nordland/Narvik/Bjerkvik";;
             Bardufoss )
                 cd "/tmp"
-                wget "https://www.yr.no/nb/utskrift/v%C3%A6rvarsel/1-296475/Norge/Troms%20og%20Finnmark/M%C3%A5lselv/Bardufoss";;
+                wget -O "$DATE-$LOCATION.pdf" "https://www.yr.no/nb/utskrift/v%C3%A6rvarsel/1-296475/Norge/Troms%20og%20Finnmark/M%C3%A5lselv/Bardufoss";;
             Skitdalshødga )
                 cd "/tmp"
-                wget "https://www.yr.no/nb/utskrift/v%C3%A6rvarsel/1-2214107/Norge/Nordland/Narvik/Skitdalsh%C3%B8gda";;
+                wget -O "$DATE-$LOCATION.pdf" "https://www.yr.no/nb/utskrift/v%C3%A6rvarsel/1-2214107/Norge/Nordland/Narvik/Skitdalsh%C3%B8gda";;
             Maridalen )
                 cd "/tmp"
-                wget "https://www.yr.no/nb/utskrift/v%C3%A6rvarsel/1-283059/Norge/Nordland/Evenes/Veggfjellet";;
+                wget -O "$DATE-$LOCATION.pdf" "https://www.yr.no/nb/utskrift/v%C3%A6rvarsel/1-283059/Norge/Nordland/Evenes/Veggfjellet";;
             Gratangsfjellet )
                 cd "/tmp"
-                wget "https://www.yr.no/nb/utskrift/v%C4%A6rvarsel/5-88010/Norge/Troms%20og%20Finnmark/Lavangen/E6%20Gratangsfjellet";;
+                wget -O "$DATE-$LOCATION.pdf" "https://www.yr.no/nb/utskrift/v%C4%A6rvarsel/5-88010/Norge/Troms%20og%20Finnmark/Lavangen/E6%20Gratangsfjellet";;
         esac
     fi
-    devour zathura "/tmp/$LOCATION"
+    devour zathura "/tmp/$DATE-$LOCATION.pdf"
 }
 
 while getopts "nod" opt
