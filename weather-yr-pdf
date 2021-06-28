@@ -8,14 +8,13 @@ LOCATION_LIST="$HOME/Documents/WeatherPlaces"
 weatherNow () {
     [[ ! -d "$WEATHERPATH" ]] && ( mkdir -p "$WEATHERPATH" )
     find $WEATHERPATH -maxdepth 1 -mmin +59 -type f -name "*.pdf" -delete                   # Delete every pdf file older than a hour
-    MAIN_WEATHER_LOCATION=$(printf '%s\n' "${places[0]}" | awk '{print $2}')
+    MAIN_WEATHER_LOCATION_URL=$(printf '%s\n' "${places[0]}" | awk '{print $2}')
     if [[ ! -f "$WEATHERPATH/$DATE-forecast.pdf" ]]; then
         cd $WEATHERPATH
-        wget -O "$DATE-forecast.pdf" "$MAIN_WEATHER_LOCATION"
-        devour zathura "$WEATHERPATH/$DATE-forecast.pdf"
-    else
+        wget -O "$DATE-forecast.pdf" "$MAIN_WEATHER_LOCATION_URL"
         devour zathura "$WEATHERPATH/$DATE-forecast.pdf"
     fi
+    devour zathura "$WEATHERPATH/$DATE-forecast.pdf"
 }
 
 viewOtherPlaces () {
