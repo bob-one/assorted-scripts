@@ -12,7 +12,6 @@ weatherNow () {
     if [[ ! -f "$WEATHERPATH/$DATE-forecast.pdf" ]]; then
         cd $WEATHERPATH
         wget -O "$DATE-forecast.pdf" "$MAIN_WEATHER_LOCATION_URL"
-        devour zathura "$WEATHERPATH/$DATE-forecast.pdf"
     fi
     devour zathura "$WEATHERPATH/$DATE-forecast.pdf"
 }

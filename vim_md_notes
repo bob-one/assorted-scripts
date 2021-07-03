@@ -1,27 +1,50 @@
-#!/bin/env bash 
+#!/bin/sh 
 NOTEBOOK_MD_DIR="$HOME/Documents/Notes"
 NOTEBOOK_PDF_DIR="$HOME/Documents/Notes/pdf"
 
 shopt -s nullglob
-NOTEBOOKS=($NOTEBOOK_MD_DIR/*)
-PDF_LIST=($NOTEBOOK_PDF_DIR/*)
+NOTEBOOKS=($NOTEBOOK_MD_DIR/*.md)
+PDF_LIST=($NOTEBOOK_PDF_DIR/*.pdf)
 
-open_notebook() {
-    [[ ! -f "$MD_NOTE" ]] && ( echo -e "---\ntitle: $SELECTION\ngeometry: margin=3cm\n---" > $MD_NOTE)
-    [[ ! -f "$PDF_NOTE" ]] && ( touch $PDF_NOTE)
+newEntry() {
+    NEW_ENTRY=$(printf '%s\n' "${NOTEBOOKS[@]}" | awk -F "/" '{print $NF}' | awk -F "." '{print $1}' |dmenu -i -c -l 20 -p "Notebooks: ")
+    [[ ! "$NEW_ENTRY" ]] && exit 1
+    
+    [[ ! -f "$NOTEBOOK_MD_DIR/$NEW_ENTRY.md" ]] && ( echo -e "---\ntitle: $NEW_ENTRY\ngeometry: margin=3cm\n---" > "$NOTEBOOK_MD_DIR/$NEW_ENTRY.md")
+    [[ ! -f "$NOTEBOOK_PDF_DIR/$NEW_ENTRY.pdf" ]] && ( touch "$NOTEBOOK_PDF_DIR/$NEW_ENTRY.pdf")
+
     alacritty -t Notes -e nvim -c "norm G2o" \
-        -c "norm zz" $MD_NOTE
-    pandoc -o $PDF_NOTE $MD_NOTE &
+        -c "norm zz" "$NOTEBOOK_MD_DIR/$NEW_ENTRY.md"
+    
+    pandoc -o "$NOTEBOOK_PDF_DIR/$NEW_ENTRY.pdf" "$NOTEBOOK_MD_DIR/$NEW_ENTRY.md" &
     exit 1
 }
 
-if [[ "$1" == "v" ]]; then
-    PDF=$(printf '%s\n' "${PDF_LIST[@]}" | awk -F "/" '{print $NF}' | dmenu -i -c -l 20 -p "PDF Notebooks: ")
-    [[ ! "PDF" ]] && ( exit 1 ) || ( zathura $NOTEBOOK_PDF_DIR/$PDF )
-elif [[ ! "$1" == "v" ]]; then
-    SELECTION=$(printf '%s\n' "${NOTEBOOKS[@]}" | awk -F "/" '{print $NF}' | awk -F "." '{print $1}' |dmenu -i -c -l 20 -p "Notebooks: ")
-    [[ ! "$SELECTION" ]] && exit 1
-    MD_NOTE="$NOTEBOOK_MD_DIR/$SELECTION.md"
-    PDF_NOTE="$NOTEBOOK_PDF_DIR/$SELECTION.pdf"
-    open_notebook
-fi
+deleteNotebook() {
+    TO_REMOVE=$(printf '%s\n' "${NOTEBOOKS[@]}" | awk -F "/" '{print $NF}' | awk -F "." '{print $1}' | dmenu -i -c -l 20 -p "Notebook to delete: ")
+    [[ ! "$TO_REMOVE" ]] && exit 1
+    SAVE_PDF=$(echo -e "Yes\nNo" | dmenu -i -c -l 2 -p "Archive the pdf? ")
+    [[ ! "$SAVE_PDF" ]] && exit 1
+    [[ -f "$NOTEBOOK_MD_DIR/$TO_REMOVE.md" ]] && rm "$NOTEBOOK_MD_DIR/$TO_REMOVE.md"
+    if [[ "$SAVE_PDF" == "Yes" ]]; then
+        [[ -f "$NOTEBOOK_PDF_DIR/$TO_REMOVE.pdf" ]] && mv "$NOTEBOOK_PDF_DIR/$TO_REMOVE.pdf" "$NOTEBOOK_PDF_DIR/Archive/$TO_REMOVE.pdf"
+    elif [[ "$SAVE_PDF" == "No" ]]; then
+        [[ -f "$NOTEBOOK_PDF_DIR/$TO_REMOVE.pdf" ]] && rm "$NOTEBOOK_PDF_DIR/$TO_REMOVE.pdf"
+    fi
+    exit 1
+}
+
+viewPdf() {
+    VIEW_PDF=$(printf '%s\n' "${PDF_LIST[@]}" | awk -F "/" '{print $NF}' | dmenu -i -c -l 20 -p "PDF Notebooks: ")
+    [[ ! "$VIEW_PDF" ]] && exit 1
+    zathura "$NOTEBOOK_PDF_DIR/$VIEW_PDF"
+}
+
+while getopts "vnd" opt
+do
+    case ${opt} in
+        v ) viewPdf;;
+        n ) newEntry;; # To create a new notebook, just type a name that is not there and hit enter
+        d ) deleteNotebook;;
+    esac
+done
