@@ -1,7 +1,5 @@
 #!/bin/env bash
-
 BROWSER="qutebrowser"
-
 declare -a LIST=(
 "Searx           https://searx.fmac.xyz"
 "Haskell         https://hackage.haskell.org/package/xmonad-contrib"
@@ -22,7 +20,6 @@ declare -a LIST=(
 "Gitlab          https://www.gitlab.com"
 "DIFI            https://laeringsplattformen.difi.no/kursoversikt"
 )
-BOOKMARKS=$(printf '%s\n' "${LIST[@]}" | dmenu -l 20 -p "Web quick links: ")
-
+BOOKMARKS=$(printf '%s\n' "${LIST[@]}" | dmenu -l 20 -p "Web quick links: " | awk '{print $2}')
 [[ ! "$BOOKMARKS" ]] && exit
 [[ "$BOOKMARKS" ]] && $BROWSER $BOOKMARKS &
