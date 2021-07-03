@@ -1,6 +1,6 @@
 #!/bin/sh 
-NOTEBOOK_MD_DIR="$HOME/Documents/Notes"
-NOTEBOOK_PDF_DIR="$HOME/Documents/Notes/pdf"
+NOTEBOOK_MD_DIR="$HOME/Documents/Notebooks"
+NOTEBOOK_PDF_DIR="$HOME/Documents/Notebooks/pdf"
 
 shopt -s nullglob
 NOTEBOOKS=($NOTEBOOK_MD_DIR/*.md)
@@ -10,33 +10,49 @@ newEntry() {
     NEW_ENTRY=$(printf '%s\n' "${NOTEBOOKS[@]}" | awk -F "/" '{print $NF}' | awk -F "." '{print $1}' |dmenu -i -c -l 20 -p "Notebooks: ")
     [[ ! "$NEW_ENTRY" ]] && exit 1
     
-    [[ ! -f "$NOTEBOOK_MD_DIR/$NEW_ENTRY.md" ]] && ( echo -e "---\ntitle: $NEW_ENTRY\ngeometry: margin=3cm\n---" > "$NOTEBOOK_MD_DIR/$NEW_ENTRY.md")
+    [[ ! -f "$NOTEBOOK_MD_DIR/$NEW_ENTRY.md" ]]   && ( echo -e "---\ntitle: $NEW_ENTRY\ngeometry: margin=3cm\n---" > "$NOTEBOOK_MD_DIR/$NEW_ENTRY.md")
     [[ ! -f "$NOTEBOOK_PDF_DIR/$NEW_ENTRY.pdf" ]] && ( touch "$NOTEBOOK_PDF_DIR/$NEW_ENTRY.pdf")
 
     alacritty -t Notes -e nvim -c "norm G2o" \
         -c "norm zz" "$NOTEBOOK_MD_DIR/$NEW_ENTRY.md"
     
-    pandoc -o "$NOTEBOOK_PDF_DIR/$NEW_ENTRY.pdf" "$NOTEBOOK_MD_DIR/$NEW_ENTRY.md" &
+    case "$NEW_ENTRY" in
+        Bash    )   pandoc --indented-code-classes=bash     --highlight-style zenburn -o "$NOTEBOOK_PDF_DIR/$NEW_ENTRY.pdf" "$NOTEBOOK_MD_DIR/$NEW_ENTRY.md" &;;
+        Python  )   pandoc --indented-code-classes=python   --highlight-style zenburn -o "$NOTEBOOK_PDF_DIR/$NEW_ENTRY.pdf" "$NOTEBOOK_MD_DIR/$NEW_ENTRY.md" &;;
+        Julia   )   pandoc --indented-code-classes=julia    --highlight-style zenburn -o "$NOTEBOOK_PDF_DIR/$NEW_ENTRY.pdf" "$NOTEBOOK_MD_DIR/$NEW_ENTRY.md" &;;
+        Cpp     )   pandoc --indented-code-classes=cpp      --highlight-style zenburn -o "$NOTEBOOK_PDF_DIR/$NEW_ENTRY.pdf" "$NOTEBOOK_MD_DIR/$NEW_ENTRY.md" &;;
+        C       )   pandoc --indented-code-classes=c        --highlight-style zenburn -o "$NOTEBOOK_PDF_DIR/$NEW_ENTRY.pdf" "$NOTEBOOK_MD_DIR/$NEW_ENTRY.md" &;;
+        Haskell )   pandoc --indented-code-classes=haskell  --highlight-style zenburn -o "$NOTEBOOK_PDF_DIR/$NEW_ENTRY.pdf" "$NOTEBOOK_MD_DIR/$NEW_ENTRY.md" &;;
+        Perl    )   pandoc --indented-code-classes=perl     --highlight-style zenburn -o "$NOTEBOOK_PDF_DIR/$NEW_ENTRY.pdf" "$NOTEBOOK_MD_DIR/$NEW_ENTRY.md" &;;
+        Lisp    )   pandoc --indented-code-classes=lisp     --highlight-style zenburn -o "$NOTEBOOK_PDF_DIR/$NEW_ENTRY.pdf" "$NOTEBOOK_MD_DIR/$NEW_ENTRY.md" &;;
+        *       )   pandoc                                                            -o "$NOTEBOOK_PDF_DIR/$NEW_ENTRY.pdf" "$NOTEBOOK_MD_DIR/$NEW_ENTRY.md" &;;
+    esac
+    
     exit 1
 }
 
 deleteNotebook() {
     TO_REMOVE=$(printf '%s\n' "${NOTEBOOKS[@]}" | awk -F "/" '{print $NF}' | awk -F "." '{print $1}' | dmenu -i -c -l 20 -p "Notebook to delete: ")
     [[ ! "$TO_REMOVE" ]] && exit 1
+
     SAVE_PDF=$(echo -e "Yes\nNo" | dmenu -i -c -l 2 -p "Archive the pdf? ")
     [[ ! "$SAVE_PDF" ]] && exit 1
+    
     [[ -f "$NOTEBOOK_MD_DIR/$TO_REMOVE.md" ]] && rm "$NOTEBOOK_MD_DIR/$TO_REMOVE.md"
+    
     if [[ "$SAVE_PDF" == "Yes" ]]; then
         [[ -f "$NOTEBOOK_PDF_DIR/$TO_REMOVE.pdf" ]] && mv "$NOTEBOOK_PDF_DIR/$TO_REMOVE.pdf" "$NOTEBOOK_PDF_DIR/Archive/$TO_REMOVE.pdf"
     elif [[ "$SAVE_PDF" == "No" ]]; then
         [[ -f "$NOTEBOOK_PDF_DIR/$TO_REMOVE.pdf" ]] && rm "$NOTEBOOK_PDF_DIR/$TO_REMOVE.pdf"
     fi
+    
     exit 1
 }
 
 viewPdf() {
     VIEW_PDF=$(printf '%s\n' "${PDF_LIST[@]}" | awk -F "/" '{print $NF}' | dmenu -i -c -l 20 -p "PDF Notebooks: ")
     [[ ! "$VIEW_PDF" ]] && exit 1
+    
     zathura "$NOTEBOOK_PDF_DIR/$VIEW_PDF"
 }
 
@@ -44,7 +60,7 @@ while getopts "vnd" opt
 do
     case ${opt} in
         v ) viewPdf;;
-        n ) newEntry;; # To create a new notebook, just type a name that is not there and hit enter
+        n ) newEntry;;          # To create a new notebook, just type a name that is not there and hit enter
         d ) deleteNotebook;;
     esac
 done
