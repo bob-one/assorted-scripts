@@ -8,30 +8,31 @@ WINDOW_MANAGER=$( echo $DESKTOP_SESSION )
 TERMINAL_EMULATOR=$( echo $TERM )
 
 # CPU
-CPU=$( bat /proc/cpuinfo | awk 'NR==5 {print $4 " " $5 " " $6}' )
-CPU_CORE_0_TEMP=$(sensors | awk 'NR==4 {print $3}')
-CPU_CORE_1_TEMP=$(sensors | awk 'NR==5 {print $3}')
-CPU_CORE_2_TEMP=$(sensors | awk 'NR==6 {print $3}')
-CPU_CORE_3_TEMP=$(sensors | awk 'NR==7 {print $3}')
-CPU_THREADS=$( bat /proc/cpuinfo | awk 'NR==11 {print $3}' )
-CPU_FREQUENCY=$( lscpu | awk 'NR==17 {print $4}' )
+sensor=$( sensors )
+cpu=$( bat /proc/cpuinfo )
+gpu=$( nvidia-smi )
+mem=$(free -mh)
 
-# GPU
-GPU_NAME=$(nvidia-smi | awk 'NR==9 {print $3 " " $4 " " $5}')
-GPU_DRIVER=$(nvidia-smi | awk 'NR==3 {print $4 " " $5 " " $6}')
-CUDA_VERSION=$(nvidia-smi | awk 'NR==3 {print $7 " " $8 " " $9}')
-GPU_FAN=$(nvidia-smi | awk 'NR==10 {print $2}')
-GPU_TEMP=$(nvidia-smi | awk 'NR==10 {print $3}')
-GPU_POWER=$(nvidia-smi | awk 'NR==10 {print $5 " / " $7}')
-GPU_RAM=$(nvidia-smi | awk 'NR==10 {print $9 " / " $11}')
-GPU_UTIL=$(nvidia-smi | awk 'NR==10 {print $13}')
-
-MEM_TOTAL=$( free -mh | awk 'NR==2 {print $2}' )
-MEM_USED=$( free -mh | awk 'NR==2 {print $3}' )
-
+CPU_FREQUENCY=$(      lscpu             | awk 'NR==17 {print $4}' )
+CPU=$(                echo "$cpu"       | awk 'NR==5 {print $4 " " $5 " " $6}' )
+CPU_THREADS=$(        echo "$cpu"       | awk 'NR==11 {print $3}' )
+CPU_CORE_0_TEMP=$(    echo "$sensor"    | awk 'NR==4 {print $3}')
+CPU_CORE_1_TEMP=$(    echo "$sensor"    | awk 'NR==5 {print $3}')
+CPU_CORE_2_TEMP=$(    echo "$sensor"    | awk 'NR==6 {print $3}')
+CPU_CORE_3_TEMP=$(    echo "$sensor"    | awk 'NR==7 {print $3}')
+GPU_NAME=$(           echo "$gpu"       | awk 'NR==9 {print $3 " " $4 " " $5}')
+GPU_DRIVER=$(         echo "$gpu"       | awk 'NR==3 {print $4 " " $5 " " $6}')
+CUDA_VERSION=$(       echo "$gpu"       | awk 'NR==3 {print $7 " " $8 " " $9}')
+GPU_FAN=$(            echo "$gpu"       | awk 'NR==10 {print $2}')
+GPU_TEMP=$(           echo "$gpu"       | awk 'NR==10 {print $3}')
+GPU_POWER=$(          echo "$gpu"       | awk 'NR==10 {print $5 " / " $7}')
+GPU_RAM=$(            echo "$gpu"       | awk 'NR==10 {print $9 " / " $11}')
+GPU_UTIL=$(           echo "$gpu"       | awk 'NR==10 {print $13}')
+MEM_TOTAL=$(          echo "$mem"       | awk 'NR==2 {print $2}' )
+MEM_USED=$(           echo "$mem"       | awk 'NR==2 {print $3}' )
 MOTHERBOARD_VENDOR=$( cat /sys/devices/virtual/dmi/id/board_vendor | awk '{print $1}')
-MOTHERBOARD_NAME=$( cat /sys/devices/virtual/dmi/id/board_name )
-MOTHERBOARD_REV=$( cat /sys/devices/virtual/dmi/id/board_version )
+MOTHERBOARD_NAME=$(   cat /sys/devices/virtual/dmi/id/board_name )
+MOTHERBOARD_REV=$(    cat /sys/devices/virtual/dmi/id/board_version )
 
 declare -a INFO=(
 "OS:                    $OS"
@@ -54,6 +55,6 @@ declare -a INFO=(
 )
 
 CHOICE=$(printf '%s\n' "${INFO[@]}" | dmenu -i -l 25 -p 'test' | awk '{print $2}')
-[[ "$CHOICE" = "-->" ]] && ( df -Ph | dmenu -i -l 25 -p 'File System: ' )
-[[ "$CHOICE" = "--->" ]] && ( dmkill )
-[[ "$CHOICE" ]] && exit || exit
+[[ "$CHOICE" = "-->" ]]     && ( df -Ph | dmenu -i -l 25 -p 'File System: ' )
+[[ "$CHOICE" = "--->" ]]    && ( dmkill )
+[[ "$CHOICE" ]]             && exit || exit

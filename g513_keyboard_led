@@ -2,13 +2,14 @@
 ini_path="/home/andre/Scripts/Programs/assorted-scripts"
 source <(grep = $ini_path/g513_keyboard_ID.ini)
 
-while getopts "sgvwm" opt; do
+while getopts "sgvwmc" opt; do
     case ${opt} in
         s ) COLOR="sxhkd";;
         g ) COLOR="game";;
         v ) COLOR="vim";;
         w ) COLOR="wave";;
         m ) COLOR="manuel";;
+        c ) COLOR="cycles";;
         /? ) echo "Invalid Option: "; exit 1;;
     esac
 done
@@ -26,153 +27,163 @@ OTHER=00ff7c
 REST=727272
 SPECIAL=ffff00
 
+function set_all() {
+    g513-led -dv $VendorID -dp $ProductID -tuk 1 -a $1
+}
+
+function set_individual() {
+    g513-led -dv $VendorID -dp $ProductID -k $1 $2
+}
+
 case $COLOR in
     game )
-        g513-led -dv $VendorID -dp $ProductID -tuk 1 -a 9090ff
-        g513-led -dv $VendorID -dp $ProductID -k W ff00ff
-        g513-led -dv $VendorID -dp $ProductID -k A ff7c00
-        g513-led -dv $VendorID -dp $ProductID -k S ff0000
-        g513-led -dv $VendorID -dp $ProductID -k D 00ffff
-        g513-led -dv $VendorID -dp $ProductID -k top ff00ff
-        g513-led -dv $VendorID -dp $ProductID -k bottom ff0000
-        g513-led -dv $VendorID -dp $ProductID -k left ff7c00
-        g513-led -dv $VendorID -dp $ProductID -k right 00ffff
-        g513-led -dv $VendorID -dp $ProductID -k shift_left 00ff00
-        g513-led -dv $VendorID -dp $ProductID -k shift_right 00ff00
-        g513-led -dv $VendorID -dp $ProductID -k space 00ff00
-        g513-led -dv $VendorID -dp $ProductID -k ctrl_left 00ff00
-        g513-led -dv $VendorID -dp $ProductID -k ctrl_right 00ff00
-        g513-led -dv $VendorID -dp $ProductID -k alt_left 00ff00
-        g513-led -dv $VendorID -dp $ProductID -k alt_right 00ff00 ;;
+        set_all                         "9090ff"              #Sett #9090ff på alle tastene
+        set_individual  "W"             "ff00ff"              
+        set_individual  "A"             "ff7c00"
+        set_individual  "S"             "ff0000"
+        set_individual  "D"             "00ffff"
+        set_individual  "top"           "ff00ff"
+        set_individual  "bottom"        "ff0000"
+        set_individual  "left"          "ff7c00"
+        set_individual  "right"         "00ffff"
+        set_individual  "shift_left"    "00ff00"
+        set_individual  "shift_right"   "00ff00"
+        set_individual  "space"         "00ff00"
+        set_individual  "ctrl_left"     "00ff00"
+        set_individual  "ctrl_right"    "00ff00"
+        set_individual  "alt_left"      "00ff00"
+        set_individual  "alt_right"     "00ff00" ;;
     vim )
-        g513-led -dv $VendorID -dp $ProductID -tuk 1 -a f0ff00
-        g513-led -dv $VendorID -dp $ProductID -k period 0000ff
-        g513-led -dv $VendorID -dp $ProductID -k winleft ff00ff
-        g513-led -dv $VendorID -dp $ProductID -k shift_left 0000ff
-        g513-led -dv $VendorID -dp $ProductID -k shift_right 0000ff
-        g513-led -dv $VendorID -dp $ProductID -k A 0000ff
-        g513-led -dv $VendorID -dp $ProductID -k Y 0000ff
-        g513-led -dv $VendorID -dp $ProductID -k D 0000ff
-        g513-led -dv $VendorID -dp $ProductID -k 0 0000ff
-        g513-led -dv $VendorID -dp $ProductID -k P 0000ff
-        g513-led -dv $VendorID -dp $ProductID -k I 0000ff
-        g513-led -dv $VendorID -dp $ProductID -k O 0000ff
-        g513-led -dv $VendorID -dp $ProductID -k escape 0000ff
-        g513-led -dv $VendorID -dp $ProductID -k C 0000ff
-        g513-led -dv $VendorID -dp $ProductID -k W 0000ff
-        g513-led -dv $VendorID -dp $ProductID -k U 0000ff
-        g513-led -dv $VendorID -dp $ProductID -k X 0000ff
-        g513-led -dv $VendorID -dp $ProductID -k H ff7c00
-        g513-led -dv $VendorID -dp $ProductID -k J ff0000
-        g513-led -dv $VendorID -dp $ProductID -k K ff00ff
-        g513-led -dv $VendorID -dp $ProductID -k L 00ffff
-        g513-led -dv $VendorID -dp $ProductID -k top ff00ff
-        g513-led -dv $VendorID -dp $ProductID -k bottom ff0000
-        g513-led -dv $VendorID -dp $ProductID -k left ff7c00
-        g513-led -dv $VendorID -dp $ProductID -k right 00ffff
-        g513-led -dv $VendorID -dp $ProductID -k ctrl_left 0000ff
-        g513-led -dv $VendorID -dp $ProductID -k ctrl_right 0000ff
-        g513-led -dv $VendorID -dp $ProductID -k V 0000ff
-        g513-led -dv $VendorID -dp $ProductID -k backslash 0000ff
-        g513-led -dv $VendorID -dp $ProductID -k Q 0000ff
-        g513-led -dv $VendorID -dp $ProductID -k Z 0000ff ;;
+        set_all                         "f0ff0f"
+        set_individual  "period"        "f0ff0f"
+        set_individual  "winleft"       "f0ff0f"
+        set_individual  "shift_left"    "f0ff0f"
+        set_individual  "shift_right"   "f0ff0f"
+        set_individual  "A"             "f0ff0f"
+        set_individual  "Y"             "f0ff0f"
+        set_individual  "D"             "f0ff0f"
+        set_individual  "0"             "f0ff0f"
+        set_individual  "P"             "f0ff0f"
+        set_individual  "I"             "f0ff0f"
+        set_individual  "O"             "f0ff0f"
+        set_individual  "escape"        "f0ff0f"
+        set_individual  "C"             "f0ff0f"
+        set_individual  "W"             "f0ff0f"
+        set_individual  "U"             "f0ff0f"
+        set_individual  "X"             "f0ff0f"
+        set_individual  "H"             "ff7c00"
+        set_individual  "J"             "ff0000"
+        set_individual  "K"             "ff00ff"
+        set_individual  "L"             "00ffff"
+        set_individual  "top"           "ff00ff"
+        set_individual  "bottom"        "ff0000"
+        set_individual  "left"          "ff7c00"
+        set_individual  "right"         "00ffff"
+        set_individual  "ctrl_left"     "f0ff0f"
+        set_individual  "ctrl_right"    "f0ff0f"
+        set_individual  "V"             "f0ff0f"
+        set_individual  "backslash"     "f0ff0f"
+        set_individual  "Q"             "f0ff0f"
+        set_individual  "Z"             "f0ff0f" ;;
 
     sxhkd )
-        g513-led -dv $VendorID -dp $ProductID -tuk 1 -a $REST
+        set_all                         "$REST"
 #   Desktops
-        g513-led -dv $VendorID -dp $ProductID -k 1 $DESKTOPS
-        g513-led -dv $VendorID -dp $ProductID -k 2 $DESKTOPS
-        g513-led -dv $VendorID -dp $ProductID -k 3 $DESKTOPS
-        g513-led -dv $VendorID -dp $ProductID -k 4 $DESKTOPS
-        g513-led -dv $VendorID -dp $ProductID -k 5 $DESKTOPS
-        g513-led -dv $VendorID -dp $ProductID -k 6 $DESKTOPS
-        g513-led -dv $VendorID -dp $ProductID -k 7 $DESKTOPS
-        g513-led -dv $VendorID -dp $ProductID -k 8 $DESKTOPS
-        g513-led -dv $VendorID -dp $ProductID -k 9 $DESKTOPS
-        g513-led -dv $VendorID -dp $ProductID -k 0 $DESKTOPS
+        set_individual  "1"             "$DESKTOPS"
+        set_individual  "2"             "$DESKTOPS"
+        set_individual  "3"             "$DESKTOPS"
+        set_individual  "4"             "$DESKTOPS"
+        set_individual  "5"             "$DESKTOPS"
+        set_individual  "6"             "$DESKTOPS"
+        set_individual  "7"             "$DESKTOPS"
+        set_individual  "8"             "$DESKTOPS"
+        set_individual  "9"             "$DESKTOPS"
+        set_individual  "0"             "$DESKTOPS"
 #   Movement
-        g513-led -dv $VendorID -dp $ProductID -k H $MOVEMENT
-        g513-led -dv $VendorID -dp $ProductID -k J $MOVEMENT
-        g513-led -dv $VendorID -dp $ProductID -k K $MOVEMENT
-        g513-led -dv $VendorID -dp $ProductID -k L $MOVEMENT
-        g513-led -dv $VendorID -dp $ProductID -k top $MOVEMENT
-        g513-led -dv $VendorID -dp $ProductID -k bottom $MOVEMENT
-        g513-led -dv $VendorID -dp $ProductID -k left $MOVEMENT
-        g513-led -dv $VendorID -dp $ProductID -k right $MOVEMENT
+        set_individual  "H"             "$MOVEMENT"
+        set_individual  "J"             "$MOVEMENT"
+        set_individual  "K"             "$MOVEMENT"
+        set_individual  "L"             "$MOVEMENT"
+        set_individual  "top"           "$MOVEMENT"
+        set_individual  "bottom"        "$MOVEMENT"
+        set_individual  "left"          "$MOVEMENT"
+        set_individual  "right"         "$MOVEMENT"
 #   Dmenu Scripts
-        g513-led -dv $VendorID -dp $ProductID -k P $DMENU_SCRIPTS
-        g513-led -dv $VendorID -dp $ProductID -k Z $DMENU_SCRIPTS
-        g513-led -dv $VendorID -dp $ProductID -k O $DMENU_SCRIPTS
-        g513-led -dv $VendorID -dp $ProductID -k U $DMENU_SCRIPTS
-        g513-led -dv $VendorID -dp $ProductID -k S $DMENU_SCRIPTS
-        g513-led -dv $VendorID -dp $ProductID -k I $DMENU_SCRIPTS
-        g513-led -dv $VendorID -dp $ProductID -k A $DMENU_SCRIPTS
-        g513-led -dv $VendorID -dp $ProductID -k C $DMENU_SCRIPTS
-        g513-led -dv $VendorID -dp $ProductID -k B $DMENU_SCRIPTS
-        g513-led -dv $VendorID -dp $ProductID -k W $DMENU_SCRIPTS
-        g513-led -dv $VendorID -dp $ProductID -k M $DMENU_SCRIPTS
-        g513-led -dv $VendorID -dp $ProductID -k comma $DMENU_SCRIPTS
-        g513-led -dv $VendorID -dp $ProductID -k period $DMENU_SCRIPTS
-        g513-led -dv $VendorID -dp $ProductID -k F8 $DMENU_SCRIPTS
-        g513-led -dv $VendorID -dp $ProductID -k print $DMENU_SCRIPTS
+        set_individual  "P"             "$DMENU_SCRIPTS"
+        set_individual  "Z"             "$DMENU_SCRIPTS"
+        set_individual  "O"             "$DMENU_SCRIPTS"
+        set_individual  "U"             "$DMENU_SCRIPTS"
+        set_individual  "S"             "$DMENU_SCRIPTS"
+        set_individual  "I"             "$DMENU_SCRIPTS"
+        set_individual  "A"             "$DMENU_SCRIPTS"
+        set_individual  "C"             "$DMENU_SCRIPTS"
+        set_individual  "B"             "$DMENU_SCRIPTS"
+        set_individual  "W"             "$DMENU_SCRIPTS"
+        set_individual  "M"             "$DMENU_SCRIPTS"
+        set_individual  "comma"         "$DMENU_SCRIPTS"
+        set_individual  "period"        "$DMENU_SCRIPTS"
+        set_individual  "F8"            "$DMENU_SCRIPTS"
+        set_individual  "print"         "$DMENU_SCRIPTS"
 #   Programs
-        g513-led -dv $VendorID -dp $ProductID -k T $PROGRAMS
-        g513-led -dv $VendorID -dp $ProductID -k F $PROGRAMS
-        g513-led -dv $VendorID -dp $ProductID -k E $PROGRAMS
-        g513-led -dv $VendorID -dp $ProductID -k V $PROGRAMS
-        g513-led -dv $VendorID -dp $ProductID -k X $PROGRAMS
-        g513-led -dv $VendorID -dp $ProductID -k F1 $PROGRAMS
-        g513-led -dv $VendorID -dp $ProductID -k F2 $PROGRAMS
+        set_individual  "T"             "$PROGRAMS"
+        set_individual  "F"             "$PROGRAMS"
+        set_individual  "E"             "$PROGRAMS"
+        set_individual  "V"             "$PROGRAMS"
+        set_individual  "X"             "$PROGRAMS"
+        set_individual  "F1"            "$PROGRAMS"
+        set_individual  "F2"            "$PROGRAMS"
 #   Special
-        g513-led -dv $VendorID -dp $ProductID -k escape $SPECIAL
-        g513-led -dv $VendorID -dp $ProductID -k winleft $SPECIAL
+        set_individual  "escape"        "$SPECIAL"
+        set_individual  "winleft"       "$SPECIAL"
 #   Scripts
-        g513-led -dv $VendorID -dp $ProductID -k G $SCRIPTS
-        g513-led -dv $VendorID -dp $ProductID -k F3 $SCRIPTS
-        g513-led -dv $VendorID -dp $ProductID -k F4 $SCRIPTS
-        g513-led -dv $VendorID -dp $ProductID -k Y $SCRIPTS
-        g513-led -dv $VendorID -dp $ProductID -k N $SCRIPTS
-        g513-led -dv $VendorID -dp $ProductID -k D $SCRIPTS
+        set_individual  "G"             "$SCRIPTS"
+        set_individual  "F3"            "$SCRIPTS"
+        set_individual  "F4"            "$SCRIPTS"
+        set_individual  "Y"             "$SCRIPTS"
+        set_individual  "N"             "$SCRIPTS"
+        set_individual  "D"             "$SCRIPTS"
 #   System
-        g513-led -dv $VendorID -dp $ProductID -k shift_left $SYSTEM
-        g513-led -dv $VendorID -dp $ProductID -k ctrl_left $SYSTEM
-        g513-led -dv $VendorID -dp $ProductID -k alt_left $SYSTEM
-        g513-led -dv $VendorID -dp $ProductID -k Q $SYSTEM
-        g513-led -dv $VendorID -dp $ProductID -k R $SYSTEM
-        g513-led -dv $VendorID -dp $ProductID -k tab $SYSTEM
+        set_individual  "shift_left"    "$SYSTEM"
+        set_individual  "ctrl_left"     "$SYSTEM"
+        set_individual  "alt_left"      "$SYSTEM"
+        set_individual  "Q"             "$SYSTEM"
+        set_individual  "R"             "$SYSTEM"
+        set_individual  "tab"           "$SYSTEM"
 #   Music
-        g513-led -dv $VendorID -dp $ProductID -k F9 $MUSIC
-        g513-led -dv $VendorID -dp $ProductID -k F10 $MUSIC
-        g513-led -dv $VendorID -dp $ProductID -k F11 $MUSIC
-        g513-led -dv $VendorID -dp $ProductID -k F12 $MUSIC
+        set_individual  "F9"            "$MUSIC"
+        set_individual  "F10"           "$MUSIC"
+        set_individual  "F11"           "$MUSIC"
+        set_individual  "F12"           "$MUSIC"
 #   NUM
-        g513-led -dv $VendorID -dp $ProductID -k num0 $NUM_NUM
-        g513-led -dv $VendorID -dp $ProductID -k num1 $NUM_NUM
-        g513-led -dv $VendorID -dp $ProductID -k num2 $NUM_NUM
-        g513-led -dv $VendorID -dp $ProductID -k num3 $NUM_NUM
-        g513-led -dv $VendorID -dp $ProductID -k num4 $NUM_NUM
-        g513-led -dv $VendorID -dp $ProductID -k num5 $NUM_NUM
-        g513-led -dv $VendorID -dp $ProductID -k num6 $NUM_NUM
-        g513-led -dv $VendorID -dp $ProductID -k num7 $NUM_NUM
-        g513-led -dv $VendorID -dp $ProductID -k num8 $NUM_NUM
-        g513-led -dv $VendorID -dp $ProductID -k num9 $NUM_NUM
-        
-        g513-led -dv $VendorID -dp $ProductID -k num_lock $NUM_OP
-        g513-led -dv $VendorID -dp $ProductID -k num_slash $NUM_OP
-        g513-led -dv $VendorID -dp $ProductID -k num_asterisk $NUM_OP
-        g513-led -dv $VendorID -dp $ProductID -k num_minus $NUM_OP
-        g513-led -dv $VendorID -dp $ProductID -k num_plus $NUM_OP
-        g513-led -dv $VendorID -dp $ProductID -k numenter $NUM_OP
-        g513-led -dv $VendorID -dp $ProductID -k num_dot $NUM_OP
-        g513-led -dv $VendorID -dp $ProductID -k insert $NUM_OP
-        g513-led -dv $VendorID -dp $ProductID -k delete $NUM_OP
-        g513-led -dv $VendorID -dp $ProductID -k home $NUM_OP
-        g513-led -dv $VendorID -dp $ProductID -k end $NUM_OP
-        g513-led -dv $VendorID -dp $ProductID -k page_up $NUM_OP
-        g513-led -dv $VendorID -dp $ProductID -k page_down $NUM_OP ;;
+        set_individual  "num0"          "$NUM_NUM"
+        set_individual  "num1"          "$NUM_NUM"
+        set_individual  "num2"          "$NUM_NUM"
+        set_individual  "num3"          "$NUM_NUM"
+        set_individual  "num4"          "$NUM_NUM"
+        set_individual  "num5"          "$NUM_NUM"
+        set_individual  "num6"          "$NUM_NUM"
+        set_individual  "num7"          "$NUM_NUM"
+        set_individual  "num8"          "$NUM_NUM"
+        set_individual  "num9"          "$NUM_NUM"
+
+        set_individual  "num_lock"      "$NUM_OP"
+        set_individual  "num_slash"     "$NUM_OP"
+        set_individual  "num_asterisk"  "$NUM_OP"
+        set_individual  "num_minus"     "$NUM_OP"
+        set_individual  "num_plus"      "$NUM_OP"
+        set_individual  "numenter"      "$NUM_OP"
+        set_individual  "num_dot"       "$NUM_OP"
+        set_individual  "insert"        "$NUM_OP"
+        set_individual  "delete"        "$NUM_OP"
+        set_individual  "home"          "$NUM_OP"
+        set_individual  "end"           "$NUM_OP"
+        set_individual  "page_up"       "$NUM_OP"
+        set_individual  "page_down"     "$NUM_OP" ;;
 
     wave )
         g513-led -dv $VendorID -dp $ProductID -fx cwave all 5 ;;
     manuel )
         g513-led -dv $VendorID -dp $ProductID -tuk 1 -a $( yad --color | tail -c 7 ) ;;
+    cycles )
+        g513-led -dv $VendorID -dp $ProductID -fx cycle all 20 ;;
 esac

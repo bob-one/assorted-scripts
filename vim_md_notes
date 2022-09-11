@@ -62,5 +62,6 @@ do
         v ) viewPdf;;
         n ) newEntry;;          # To create a new notebook, just type a name that is not there and hit enter
         d ) deleteNotebook;;
+        * ) echo -e "Invalid option\n-v\tView pdf version\n-n\tWrite a new entry into one of the notes\n-d\tDelete a note"
     esac
 done

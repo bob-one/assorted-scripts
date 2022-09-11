@@ -1,0 +1,30 @@
+#!/bin/env bash
+
+BMFILE="$HOME/.config/qutebrowser/bookmarks/urls"
+QMFILE="$HOME/.config/qutebrowser/quickmarks"
+HFILE="$HOME/.local/share/qutebrowser/history.sqlite"
+SEPERATOR="-----------------------------------------------------------------------------------"
+
+readarray -t bmarks < "$BMFILE"
+readarray -t qmarks < "$QMFILE"
+
+bmlist=$(printf '%s\n' "${bmarks[@]}" | awk '{print $2" - "$1}')
+qmlist=$(printf '%s\n' "${qmarks[@]}" | awk '{print "["$1"] - "$NF}' | sort)
+SQL="SELECT h.title, h.url FROM history as h where url like 'http%';"
+histlist=$(printf '%s\n' "$(sqlite3 "$HFILE" "${SQL}")" | awk -F "|" '{print $1" - "$NF}')
+
+choice=$(printf '%s\n' "$qmlist" "$SEPERATOR" "$bmlist" "$SEPERATOR" "$histlist" | dmenu -i -l 20 -p 'Bookmarks and history:')
+
+#[[ "$choice" == "$SEPERATOR" ]] && qutebrowser
+#[[ ! "$choice" == "$SEPERATOR" ]] && ( url=$(echo "${choice}" | awk '{print $NF}') || exit; qutebrowser "$url" )
+
+
+if [ "$choice" == "$SEPERATOR" ]; then
+    qutebrowser
+elif [ "$choice" ]; then
+    url=$(echo "${choice}" | awk '{print $NF}') || exit
+    qutebrowser "$url"
+else
+    exit 0
+fi
+

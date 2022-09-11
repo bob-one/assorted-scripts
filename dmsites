@@ -1,0 +1,35 @@
+#!/bin/env bash
+BROWSER="qutebrowser"
+declare -a LIST=(
+"StartPage       https://www.startpage.com"
+"Searx           https://searx.fmac.xyz"
+"RSI             https://robertsspaceindustries.com"
+"Haskell         https://hackage.haskell.org/package/xmonad-contrib"
+"Qtile           http://qtile.org"
+"Google          https://www.google.com"
+"DuckduckGo      https://www.duckduckgo.com"
+"iTromso         https://www.itromso.no"
+"Nordlys         https://www.nordlys.no"
+"Fremover        https://www.fremover.no"
+"NRK             https://www.nrk.no"
+"LBRY            https://www.lbry.tv"
+"Youtube         https://www.youtube.com"
+"Suckless        https://suckless.org"
+"Komplett        https://www.komplett.no"
+"Elkjøp          https://www.elkjop.no"
+"ThisIsIT        https://thisisit.io/"
+"Finn            https://www.finn.no"
+"Gmail           https://www.gmail.com"
+"Github          https://www.github.com"
+"Gitlab          https://www.gitlab.com"
+"DIFI            https://laeringsplattformen.difi.no/kursoversikt"
+"Instructables   https://www.instructables.com"
+"Odysee          https://odysee.com"
+"Sparkfun        https://www.sparkfun.com"
+"Adafruit        https://www.adafruit.com"
+"Kjell           https://www.kjell.com"
+"Thepihut        https://www.thepihut.com"
+)
+BOOKMARKS=$(printf '%s\n' "${LIST[@]}" | dmenu -l 20 -p "Web quick links: " | awk '{print $2}')
+[[ ! "$BOOKMARKS" ]] && exit
+[[ "$BOOKMARKS" ]] && $BROWSER $BOOKMARKS &
