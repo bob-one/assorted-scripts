@@ -1,12 +1,10 @@
 #!/bin/env bash
 
-WINDOW=$(wmctrl -lp | dmenu -i -l 20 -p 'Select window: ' | awk '{print $1}')
-DESTINATION=$(wmctrl -d | dmenu -i -l 20 -p 'Destination Desktop: ' | awk '{print $1}')
-if [[ "$WINDOW" == "" ]]; then
-    exit 0
-elif [[ "$DESTINATION" == "" ]]; then
-    exit 0
-else
-    wmctrl -ir "$WINDOW" -t "$DESTINATION"
-    exit 0
-fi
+WINDOW=$(wmctrl -lpx | awk -F'[" ".]' '{print "Work Space: "$3"    PID: "$1"    Name: "$7}' | dmenu -i -l 20 -p 'Select window: ' | awk '{print $5}')
+[[ "$WINDOW" == "" ]] && exit 0
+
+DESTINATION=$(wmctrl -d | awk '{print $1"    "$2"    "$9}' | dmenu -i -l 20 -p 'Destination Desktop: ' | awk '{print $1}')
+[[ "$DESTINATION" == "" ]] && exit 0
+
+wmctrl -ir "$WINDOW" -t "$DESTINATION"
+exit 0

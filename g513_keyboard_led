@@ -88,7 +88,7 @@ case $COLOR in
 
     sxhkd )
         set_all                         "$REST"
-#   Desktops
+        #   Desktops
         set_individual  "1"             "$DESKTOPS"
         set_individual  "2"             "$DESKTOPS"
         set_individual  "3"             "$DESKTOPS"
@@ -99,7 +99,7 @@ case $COLOR in
         set_individual  "8"             "$DESKTOPS"
         set_individual  "9"             "$DESKTOPS"
         set_individual  "0"             "$DESKTOPS"
-#   Movement
+        #   Movement
         set_individual  "H"             "$MOVEMENT"
         set_individual  "J"             "$MOVEMENT"
         set_individual  "K"             "$MOVEMENT"
@@ -108,7 +108,7 @@ case $COLOR in
         set_individual  "bottom"        "$MOVEMENT"
         set_individual  "left"          "$MOVEMENT"
         set_individual  "right"         "$MOVEMENT"
-#   Dmenu Scripts
+        #   Dmenu Scripts
         set_individual  "P"             "$DMENU_SCRIPTS"
         set_individual  "Z"             "$DMENU_SCRIPTS"
         set_individual  "O"             "$DMENU_SCRIPTS"
@@ -124,7 +124,7 @@ case $COLOR in
         set_individual  "period"        "$DMENU_SCRIPTS"
         set_individual  "F8"            "$DMENU_SCRIPTS"
         set_individual  "print"         "$DMENU_SCRIPTS"
-#   Programs
+        #   Programs
         set_individual  "T"             "$PROGRAMS"
         set_individual  "F"             "$PROGRAMS"
         set_individual  "E"             "$PROGRAMS"
@@ -132,29 +132,29 @@ case $COLOR in
         set_individual  "X"             "$PROGRAMS"
         set_individual  "F1"            "$PROGRAMS"
         set_individual  "F2"            "$PROGRAMS"
-#   Special
+        #   Special
         set_individual  "escape"        "$SPECIAL"
         set_individual  "winleft"       "$SPECIAL"
-#   Scripts
+        #   Scripts
         set_individual  "G"             "$SCRIPTS"
         set_individual  "F3"            "$SCRIPTS"
         set_individual  "F4"            "$SCRIPTS"
         set_individual  "Y"             "$SCRIPTS"
         set_individual  "N"             "$SCRIPTS"
         set_individual  "D"             "$SCRIPTS"
-#   System
+        #   System
         set_individual  "shift_left"    "$SYSTEM"
         set_individual  "ctrl_left"     "$SYSTEM"
         set_individual  "alt_left"      "$SYSTEM"
         set_individual  "Q"             "$SYSTEM"
         set_individual  "R"             "$SYSTEM"
         set_individual  "tab"           "$SYSTEM"
-#   Music
+        #   Music
         set_individual  "F9"            "$MUSIC"
         set_individual  "F10"           "$MUSIC"
         set_individual  "F11"           "$MUSIC"
         set_individual  "F12"           "$MUSIC"
-#   NUM
+        #   NUM
         set_individual  "num0"          "$NUM_NUM"
         set_individual  "num1"          "$NUM_NUM"
         set_individual  "num2"          "$NUM_NUM"

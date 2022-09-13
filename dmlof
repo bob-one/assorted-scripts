@@ -2,5 +2,5 @@
 # using dmenu to list all open windows
 # select the window you want and it will be sent to your current desktop, and gain focus
 
-PROGRAM_PID=$(wmctrl -lpx | awk -F'[" ".]' '{print "Work Space: "$3"      PID: "$1"        Name: "$7}' | dmenu -i -l 20 -p 'Active Windows: ' | awk '{print $5}')
+PROGRAM_PID=$(wmctrl -lpx | awk -F'[" ".]' '{print "Work Space: "$3"    PID: "$1"    Name: "$7}' | dmenu -i -l 20 -p 'Active Windows: ' | awk '{print $5}')
 [[ ! "$PROGRAM_PID" == "" ]] && ( wmctrl -iR "$PROGRAM_PID"; exit 0 ) || ( exit 0 )
